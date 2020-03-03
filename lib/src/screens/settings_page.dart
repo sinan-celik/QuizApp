@@ -59,7 +59,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
-               /* DropdownButton<MyTheme>(
+                /* DropdownButton<MyTheme>(
                   hint: const Text('Status'),
                   value: appModel.settingsModel.settings.currentTheme,
                   items: _buildThemesList(),
@@ -94,12 +94,12 @@ class _SettingsPageState extends State<SettingsPage> {
                     onChanged: appModel.settingsModel.setApiType,
                     items: [
                       const DropdownMenuItem<ApiType>(
-                        value: ApiType.mock,
-                        child: Text('Demo'),
+                        value: ApiType.remote,
+                        child: Text('Survey Api'),
                       ),
                       const DropdownMenuItem<ApiType>(
-                        value: ApiType.remote,
-                        child: Text('opentdb.com'),
+                        value: ApiType.mock,
+                        child: Text('Demo'),
                       ),
                     ]),
               ],

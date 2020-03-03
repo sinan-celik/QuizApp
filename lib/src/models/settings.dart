@@ -4,9 +4,9 @@ import 'question.dart';
 
 class Settings {
   String currentTheme;
-  ApiType apiType = ApiType.mock;
-  int countdown = 8000; // milliseconds
-  int numQuestions = 5;
+  ApiType apiType = ApiType.remote;
+  int countdown = 10000; // milliseconds
+  int numQuestions = 4;
   Category categoryChosen;
   QuestionDifficulty questionsDifficulty = QuestionDifficulty.medium;
 }

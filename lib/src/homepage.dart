@@ -112,7 +112,7 @@ class DrawerWidget extends StatelessWidget {
           DrawerHeader(
             child: Center(
               child: const Text(
-                'TRIVIA',
+                'AREDA',
                 style: TextStyle(
                   fontSize: 36.0,
                   fontWeight: FontWeight.w700,

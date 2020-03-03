@@ -32,7 +32,7 @@ class MainPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 28.0, vertical: 56.0),
                       child: const Text(
-                        'TRIVIA',
+                        'Areda',
                         style: TextStyle(
                           fontSize: 46.0,
                           fontWeight: FontWeight.w700,
