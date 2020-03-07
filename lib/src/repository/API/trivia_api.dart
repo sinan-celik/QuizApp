@@ -10,27 +10,27 @@ import '../../models/question.dart';
 import 'api_interface.dart';
 
 class TriviaAPI implements QuestionsAPI {
-  @override
-  Future<List<Category>> getCategories() async {
-    const categoriesURL = 'https://opentdb.com/api_category.php';
-    final response = await http.get(categoriesURL);
+  // @override
+  // Future<List<Category>> getCategories() async {
+  //   const categoriesURL = 'https://opentdb.com/api_category.php';
+  //   final response = await http.get(categoriesURL);
 
-    if (response.statusCode == 200) {
-      final jsonResponse = convert.jsonDecode(response.body);
-      final result = (jsonResponse['trivia_categories'] as List)
-          .map((category) => Category.fromJson(category));
-      List<Category> categories;
-      categories = [];
-      categories
-        ..addAll(result)
-        ..add(Category(id: 0, name: 'Any category'));
-      //state.rebuild();
-      return categories;
-    } else {
-      print('Request failed with status: ${response.statusCode}.');
-      //return false;
-    }
-  }
+  //   if (response.statusCode == 200) {
+  //     final jsonResponse = convert.jsonDecode(response.body);
+  //     final result = (jsonResponse['trivia_categories'] as List)
+  //         .map((category) => Category.fromJson(category));
+  //     List<Category> categories;
+  //     categories = [];
+  //     categories
+  //       ..addAll(result)
+  //       ..add(Category(id: 0, name: 'Any category'));
+  //     //state.rebuild();
+  //     return categories;
+  //   } else {
+  //     print('Request failed with status: ${response.statusCode}.');
+  //     //return false;
+  //   }
+  // }
 
   @override
   Future<List<Question>> getQuestions(

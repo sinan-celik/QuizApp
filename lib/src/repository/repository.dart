@@ -12,30 +12,30 @@ class Repository {
 
   final categories = List<Category>();
   final questions = List<Question>();
-  QuestionsAPI api = MockAPI();
+  QuestionsAPI api = TriviaAPI();
 
   bool needCategoriesLoading = true;
 
-  void changeApi(ApiType type) {
-    if (type == ApiType.mock) {
-      api = MockAPI();
-    } else {
-      api = TriviaAPI();
-    }
-  }
+  // void changeApi(ApiType type) {
+  //   // if (type == ApiType.mock) {
+  //   //   api = MockAPI();
+  //   // } else {
+  //     api = TriviaAPI();
+  //   // }
+  // }
 
-  Future<bool> loadCategories() async {
-    print('Need categories loading: $needCategoriesLoading');
-    if (needCategoriesLoading) {
-      categories
-        ..clear()
-        ..addAll(await api.getCategories());
+  // Future<bool> loadCategories() async {
+  //   print('Need categories loading: $needCategoriesLoading');
+  //   if (needCategoriesLoading) {
+  //     categories
+  //       ..clear()
+  //       ..addAll(await api.getCategories());
 
-      needCategoriesLoading = false;
-    }
+  //     needCategoriesLoading = false;
+  //   }
 
-    return true;
-  }
+  //   return true;
+  // }
 
   Future<List<Question>> loadQuestions(
       {int numQuestions,

@@ -29,25 +29,25 @@ class SettingsModel extends DataModel {
     return true;
   }
 
-  void setCategory(Category category) {
-    settings.categoryChosen = category;
-    states.mainPage.rebuild();
-  }
+  // void setCategory(Category category) {
+  //   settings.categoryChosen = category;
+  //   states.mainPage.rebuild();
+  // }
 
   void setDifficulty(QuestionDifficulty difficulty) {
-    settings.questionsDifficulty = difficulty;
+    // settings.questionsDifficulty = difficulty;
     states.settingsPage.rebuild();
   }
 
-  void setApiType(ApiType type) {
-    if (settings.apiType != type) {
-      settings.apiType = type;
-      repository
-        ..needCategoriesLoading = true
-        ..changeApi(type);
-    }
-    states.tab.rebuild();
-  }
+  // void setApiType(ApiType type) {
+  //   if (settings.apiType != type) {
+  //     settings.apiType = type;
+  //     repository
+  //       ..needCategoriesLoading = true
+  //       ..changeApi(type);
+  //   }
+  //   states.tab.rebuild();
+  // }
 
   void setTheme(String theme) {
     settings.currentTheme = theme;

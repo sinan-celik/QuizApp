@@ -66,30 +66,30 @@ class TriviaMain extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 22),
+          padding: const EdgeInsets.symmetric(horizontal: 50),
           decoration: BoxDecoration(
             color: const Color(0xff283593),
             borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(25),
                 bottomRight: Radius.circular(25)),
             boxShadow: [
-              BoxShadow(color: Colors.blue, blurRadius: 3.0, spreadRadius: 1.5),
+              // BoxShadow(color: Colors.blue, blurRadius: 3.0, spreadRadius: 1.5),
             ],
           ),
           child: Column(
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      'SCORE: ${triviaModel.triviaStats.score}',
-                      style: scoreHeaderStyle,
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     Padding(
+              //       padding: const EdgeInsets.all(16),
+              //       child: Text(
+              //         'SCORE: ${triviaModel.triviaStats.score}',
+              //         style: scoreHeaderStyle,
+              //       ),
+              //     ),
+              //   ],
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[

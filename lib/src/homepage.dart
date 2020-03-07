@@ -43,28 +43,29 @@ class SwitchTabWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (appModel.tab.value) {
       case AppTab.main:
-        Future categoriesFuture = appModel.repository.loadCategories();
+        // Future categoriesFuture = appModel.repository.loadCategories();
 
         return Rebuilder(
           rebuilderState: appModel.states.mainPage,
           builder: (state, _) => FutureBuilder(
-              future: categoriesFuture,
+              // future: categoriesFuture,
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(child: const CircularProgressIndicator());
-                } else {
-                  appModel.settingsModel.settings.categoryChosen =
-                      appModel.repository.categories.first;
-                  return MainPage();
-                }
+               return MainPage();
+                // if (!snapshot.hasData) {
+                //   return Center(child: const CircularProgressIndicator());
+                // } else {
+                //   // appModel.settingsModel.settings.categoryChosen =
+                //   //     appModel.repository.categories.first;
+                //   return MainPage();
+                // }
               }),
         );
         break;
       case AppTab.trivia:
         Future questionsFuture = appModel.repository.loadQuestions(
             numQuestions: appModel.settingsModel.settings.numQuestions,
-            category: appModel.settingsModel.settings.categoryChosen,
-            difficulty: appModel.settingsModel.settings.questionsDifficulty,
+            // category: appModel.settingsModel.settings.categoryChosen,
+            // difficulty: appModel.settingsModel.settings.questionsDifficulty,
             type: QuestionType.multiple);
 
         return Rebuilder(

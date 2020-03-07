@@ -79,34 +79,35 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Quiz database:',
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ),
-                DropdownButton<ApiType>(
-                    value: appModel.settingsModel.settings.apiType,
-                    onChanged: appModel.settingsModel.setApiType,
-                    items: [
-                      const DropdownMenuItem<ApiType>(
-                        value: ApiType.remote,
-                        child: Text('Survey Api'),
-                      ),
-                      const DropdownMenuItem<ApiType>(
-                        value: ApiType.mock,
-                        child: Text('Demo'),
-                      ),
-                    ]),
-              ],
-            ),
-            appModel.settingsModel.settings.apiType == ApiType.mock
-                ? Container()
-                : Column(
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: <Widget>[
+            //     const Padding(
+            //       padding: EdgeInsets.all(8.0),
+            //       child: Text(
+            //         'Quiz database:',
+            //         style: TextStyle(fontWeight: FontWeight.w500),
+            //       ),
+            //     ),
+            //     DropdownButton<ApiType>(
+            //         value: appModel.settingsModel.settings.apiType,
+            //         // onChanged: appModel.settingsModel.setApiType,
+            //         items: [
+            //           const DropdownMenuItem<ApiType>(
+            //             value: ApiType.remote,
+            //             child: Text('Survey Api'),
+            //           ),
+            //           // const DropdownMenuItem<ApiType>(
+            //           //   value: ApiType.mock,
+            //           //   child: Text('Demo'),
+            //           // ),
+            //         ]),
+            //   ],
+            // ),
+            // appModel.settingsModel.settings.apiType == ApiType.mock
+            //     ? Container()
+            //     : 
+                Column(
                     children: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -153,36 +154,36 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                         ],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              'Difficulty:',
-                              style: TextStyle(fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          DropdownButton<QuestionDifficulty>(
-                              value: appModel
-                                  .settingsModel.settings.questionsDifficulty,
-                              onChanged: appModel.settingsModel.setDifficulty,
-                              items: [
-                                const DropdownMenuItem<QuestionDifficulty>(
-                                  value: QuestionDifficulty.easy,
-                                  child: Text('Easy'),
-                                ),
-                                const DropdownMenuItem<QuestionDifficulty>(
-                                  value: QuestionDifficulty.medium,
-                                  child: Text('Medium'),
-                                ),
-                                const DropdownMenuItem<QuestionDifficulty>(
-                                  value: QuestionDifficulty.hard,
-                                  child: Text('Hard'),
-                                ),
-                              ]),
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.start,
+                      //   children: <Widget>[
+                      //     const Padding(
+                      //       padding: EdgeInsets.all(8.0),
+                      //       child: Text(
+                      //         'Difficulty:',
+                      //         style: TextStyle(fontWeight: FontWeight.w500),
+                      //       ),
+                      //     ),
+                      //     DropdownButton<QuestionDifficulty>(
+                      //         value: appModel
+                      //             .settingsModel.settings.questionsDifficulty,
+                      //         onChanged: appModel.settingsModel.setDifficulty,
+                      //         items: [
+                      //           const DropdownMenuItem<QuestionDifficulty>(
+                      //             value: QuestionDifficulty.easy,
+                      //             child: Text('Easy'),
+                      //           ),
+                      //           const DropdownMenuItem<QuestionDifficulty>(
+                      //             value: QuestionDifficulty.medium,
+                      //             child: Text('Medium'),
+                      //           ),
+                      //           const DropdownMenuItem<QuestionDifficulty>(
+                      //             value: QuestionDifficulty.hard,
+                      //             child: Text('Hard'),
+                      //           ),
+                      //         ]),
+                      //   ],
+                      // ),
                     ],
                   ),
             Row(
