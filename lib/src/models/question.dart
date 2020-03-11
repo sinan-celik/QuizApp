@@ -3,10 +3,15 @@ enum QuestionDifficulty { easy, medium, hard }
 enum QuestionType { boolean, multiple }
 
 class QuestionModel {
-  QuestionModel({this.question, this.correctAnswer, this.incorrectAnswers});
+  QuestionModel(
+      {this.questionImage,
+      this.question,
+      this.correctAnswer,
+      this.incorrectAnswers});
 
   factory QuestionModel.fromJson(Map<String, dynamic> json) {
     return QuestionModel(
+        questionImage: json['questionImage'],
         question: json['question'],
         correctAnswer: json['correct_answer'],
         incorrectAnswers: (json['incorrect_answers'] as List)
@@ -14,13 +19,18 @@ class QuestionModel {
             .toList());
   }
 
+  String questionImage;
   String question;
   String correctAnswer;
   List<String> incorrectAnswers;
 }
 
 class Question {
-  Question({this.question, this.answers, this.correctAnswerIndex});
+  Question(
+      {this.questionImage,
+      this.question,
+      this.answers,
+      this.correctAnswerIndex});
   factory Question.fromQuestionModel(QuestionModel model) {
     final List<String> answers = []
       ..add(model.correctAnswer)
@@ -30,9 +40,14 @@ class Question {
     final index = answers.indexOf(model.correctAnswer);
 
     return Question(
-        question: model.question, answers: answers, correctAnswerIndex: index);
+        questionImage: model.questionImage,
+        question: model.question,
+        answers: answers,
+        correctAnswerIndex: index);
   }
 
+// bytes:  base64.decode(''),
+  String questionImage;
   String question;
   List<String> answers;
   int correctAnswerIndex;
