@@ -8,6 +8,7 @@ import '../datamodels/trivia_data.dart';
 import '../models/models.dart';
 import '../models/question.dart';
 import '../widgets/answers_widget.dart';
+import '../widgets/photo_answer_widget.dart';
 import '../widgets/countdown_widget.dart';
 import '../widgets/question_widget.dart';
 
@@ -62,7 +63,7 @@ class TriviaMain extends StatelessWidget {
     final triviaModel = DataModelProvider.of<AppModel>(context).triviaModel;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Container(
@@ -70,8 +71,10 @@ class TriviaMain extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xff283593),
             borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25)),
+                // topLeft: Radius.circular(10),
+                // topRight: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10)),
             boxShadow: [
               // BoxShadow(color: Colors.blue, blurRadius: 3.0, spreadRadius: 1.5),
             ],
@@ -92,17 +95,18 @@ class TriviaMain extends StatelessWidget {
               // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Text(
-                    'Corrects: ${triviaModel.triviaStats.corrects.length}',
+                    'Doğru: ${triviaModel.triviaStats.corrects.length}',
                     style: questionsHeaderStyle,
                   ),
                   Text(
-                    'Wrongs: ${triviaModel.triviaStats.wrongs.length}',
+                    'Yanlış: ${triviaModel.triviaStats.wrongs.length}',
                     style: questionsHeaderStyle,
                   ),
                   Text(
-                    'Not answered: ${triviaModel.triviaStats.noAnswered.length}',
+                    'Cevapsız: ${triviaModel.triviaStats.noAnswered.length}',
                     style: questionsHeaderStyle,
                   ),
                 ],
@@ -117,24 +121,34 @@ class TriviaMain extends StatelessWidget {
           height: 12,
         ),
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(2),
           child: QuestionWidget(
             triviaModel: triviaModel,
             question: question,
           ),
         ),
         Container(
-          height: 32,
+          height: 1,
         ),
         Expanded(
           child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 22),
-              child: AnswersWidget(
-                triviaModel: triviaModel,
-                question: question,
-                answerAnimation: triviaModel.answersAnimation,
-                isTriviaEnd: triviaStatus.isTriviaEnd,
-              )),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: question.answerType == "IMAGE"
+                ? PhotoAnswersWidget(
+                    triviaModel: triviaModel,
+                    question: question,
+                    answerAnimation: triviaModel.answersAnimation,
+                    isTriviaEnd: triviaStatus.isTriviaEnd,
+                  )
+                : question.answerType == "TEXT"
+                    ? AnswersWidget(
+                        triviaModel: triviaModel,
+                        question: question,
+                        answerAnimation: triviaModel.answersAnimation,
+                        isTriviaEnd: triviaStatus.isTriviaEnd,
+                      )
+                    : Container(),
+          ),
         ),
         Column(
           children: <Widget>[

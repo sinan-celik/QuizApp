@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import 'package:frideos/frideos.dart';
@@ -9,10 +12,10 @@ import '../models/models.dart';
 import '../models/question.dart';
 
 const questionLeadings = ['A', 'B', 'C', 'D'];
-const boxHeight = 72.0;
+const boxHeight = 130.0;
 
-class AnswersWidget extends StatefulWidget {
-  const AnswersWidget(
+class PhotoAnswersWidget extends StatefulWidget {
+  const PhotoAnswersWidget(
       {this.triviaModel,
       this.question,
       this.answerAnimation,
@@ -24,10 +27,10 @@ class AnswersWidget extends StatefulWidget {
   final bool isTriviaEnd;
 
   @override
-  _AnswersRebuilder createState() => _AnswersRebuilder();
+  _PhotoAnswersRebuilder createState() => _PhotoAnswersRebuilder();
 }
 
-class _AnswersRebuilder extends State<AnswersWidget>
+class _PhotoAnswersRebuilder extends State<PhotoAnswersWidget>
     with TickerProviderStateMixin {
   final Map<int, Animation<double>> animations = {};
   AnimationController controller;
@@ -127,29 +130,43 @@ class _AnswersRebuilder extends State<AnswersWidget>
       final index = widget.question.answers.indexOf(answer);
 
       return Positioned(
-        width: MediaQuery.of(context).size.width - 46.0,
-        height: 54.0,
+        // width: MediaQuery.of(context).size.width - 46.0,
+        left: index == 0 || index == 2
+            ? 20.0
+            : MediaQuery.of(context).size.width / 2,
+        width: (MediaQuery.of(context).size.width - 80) / 2,
+
+        height: boxHeight,
         // If the answer isn't the chosen one to the top parameter
         // is passed the value of the animation, while for the chosen
         // answer it is passed a fixed position.
-        top: index != widget.answerAnimation.chosenAnswerIndex
-            ? animations[index].value
-            : boxHeight * index,
-        left: 0.0,
+
+        // top: index != widget.answerAnimation.chosenAnswerIndex
+        //     ? animations[index].value
+        //     : boxHeight * index,
+
+        top: index == 0 || index == 1 ? 10.0 : boxHeight + 30,
+
         child: GestureDetector(
             child: FadeInWidget(
               duration: 750,
               child: Container(
                 decoration: BoxDecoration(
+                    image: DecorationImage(
+                        // image: NetworkImage(
+                        //     'https://images.unsplash.com/photo-1548691173-8be73e75bec9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80'),
+                        image: MemoryImage(Uint8List.fromList(
+                            base64.decode(answer.answerImage))),
+                        fit: BoxFit.cover),
                     color: (index == widget.answerAnimation.chosenAnswerIndex)
                         ? colorAnimation.value
                         : const Color(0xff283593),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(35),
-                      topRight: Radius.circular(15),
-                      bottomLeft: Radius.circular(35),
-                      bottomRight: Radius.circular(15),
-                    ),
+                    // borderRadius: const BorderRadius.only(
+                    //   topLeft: Radius.circular(15),
+                    //   topRight: Radius.circular(15),
+                    //   bottomLeft: Radius.circular(15),
+                    //   bottomRight: Radius.circular(15),
+                    // ),
                     boxShadow: [
                       BoxShadow(
                           color:
@@ -165,16 +182,18 @@ class _AnswersRebuilder extends State<AnswersWidget>
                                   ? 2.5
                                   : 1.5),
                     ]),
-                child: ListTile(
-                  leading: CircleAvatar(
-                      radius: questionCircleAvatarRadius,
-                      backgroundColor: questionCircleAvatarBackground,
-                      child: Text(
-                        questionLeadings[index],
-                        style: answersLeadingStyle,
-                      )),
-                  title: Text(answer.answerText, style: answersStyle),
-                ),
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Flex(
+                        direction: Axis.horizontal,
+                        children: <Widget>[
+                          Text(answer.answerText)
+                        ],
+                      )
+                    ],
+                  ),
+                )
               ),
             ),
             onTap: () {

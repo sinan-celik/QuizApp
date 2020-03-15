@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:rebuilder/rebuilder.dart';
+import 'package:trivia_rebuilder/src/models/answer.dart';
 
 import '../models/models.dart';
 import '../models/question.dart';
@@ -31,7 +32,7 @@ class TriviaModel extends DataModel {
 
   int index = 0;
   Question currentQuestion;
-  String chosenAnswer;
+  Answer chosenAnswer;
   int currentTime = 0;
   double countdownBar;
   Timer timer;
@@ -101,7 +102,7 @@ class TriviaModel extends DataModel {
 
   void notAnswered(Question question) => triviaStats.addNoAnswer(question);
 
-  void checkAnswer(Question question, String answer) {
+  void checkAnswer(Question question, Answer answer) {
     if (!triviaStatus.isTriviaEnd) {
       question.chosenAnswerIndex = question.answers.indexOf(answer);
       if (question.isCorrect(answer)) {
@@ -137,7 +138,7 @@ class TriviaModel extends DataModel {
     states.triviaPage.rebuild();
   }
 
-  void onChosenAnswer(String answer) {
+  void onChosenAnswer(Answer answer) {
     chosenAnswer = answer;
 
     stopTimer();

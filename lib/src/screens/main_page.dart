@@ -46,36 +46,34 @@ class MainPage extends StatelessWidget {
                   onTap: () => appModel.tab.value = AppTab.trivia,
                 ),
               ]),
-       Container(
-         padding: const EdgeInsets.only(top: 50.0),
-         alignment: Alignment.bottomCenter,
-              child:  Column(
-                children: <Widget>[
-                GestureDetector(
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 72,
-                    width: 180,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(35),
+              Container(
+                  padding: const EdgeInsets.only(top: 50.0),
+                  alignment: Alignment.bottomCenter,
+                  child: Column(children: <Widget>[
+                    GestureDetector(
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 72,
+                        width: 180,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(35),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.blue,
+                                  blurRadius: 2.0,
+                                  spreadRadius: 2.5),
+                            ]),
+                        child: const Text(
+                          'Oynamaya Başla',
+                          style: TextStyle(fontWeight: FontWeight.w500),
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.blue,
-                              blurRadius: 2.0,
-                              spreadRadius: 2.5),
-                        ]),
-                    child: const Text(
-                      'Oynamaya Başla',
-                      style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      onTap: () => appModel.tab.value = AppTab.trivia,
                     ),
-                  ),
-                  onTap: () => appModel.tab.value = AppTab.trivia,
-                ),
-              ])
-       )
+                  ]))
             ],
           )),
     );

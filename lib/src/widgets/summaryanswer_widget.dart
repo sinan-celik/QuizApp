@@ -14,7 +14,7 @@ class SummaryAnswers extends StatelessWidget {
       ..addAll(
         question.answers.map((answer) {
           return Text(
-            answer,
+            answer.answerText,
             style: question.isCorrect(answer)
                 ? correctAnswerStyle
                 : question.isChosen(answer) ? wrongAnswerStyle : notChosenStyle,
