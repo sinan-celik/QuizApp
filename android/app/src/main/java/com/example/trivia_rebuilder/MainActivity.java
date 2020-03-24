@@ -1,4 +1,4 @@
-package com.example.trivia_rebuilder;
+package com.fizosoft.quizapp;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

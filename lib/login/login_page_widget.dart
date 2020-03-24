@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:momentum/Screens/Profile.dart';
 import 'package:trivia_rebuilder/login/SocialIcons.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 bool _signUpActive = false;
 bool _signInActive = true;
@@ -18,6 +19,14 @@ TextEditingController _newEmailController = TextEditingController();
 TextEditingController _newPasswordController = TextEditingController();
 // final FirebaseAuth _auth = FirebaseAuth.instance;
 
+GoogleSignIn _googleSignIn = GoogleSignIn(
+  scopes: [
+    'email',
+    // 'https://www.googleapis.com/auth/contacts.readonly',
+  ],
+);
+
+GoogleSignInAccount _account;
 
 // class LoginPageWidget extends StatelessWidget {
 //   LoginPageWidget({Key key}) : super(key: key);
@@ -223,6 +232,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
               color: Colors.blueGrey,
               // onPressed: () => Controller.tryToLogInUserViaEmail(
               //     context, _emailController, _passwordController),
+              onPressed: () => {},
             ),
           ),
         ),
@@ -263,10 +273,10 @@ class _LogInPageState extends StateMVC<LogInPage> {
                   ],
                 ),
                 color: Color(0xFF3C5A99),
-                // onPressed: () => Controller.tryToLogInUserViaFacebook(context),
+                onPressed: () => {Controller.handleGoogleSignIn(context)},
               )),
         ),
-         SizedBox(
+        SizedBox(
           height: ScreenUtil().setHeight(30),
         ),
         Container(
@@ -303,7 +313,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
                   ],
                 ),
                 color: Color(0xFF3C5A99),
-                // onPressed: () => Controller.tryToLogInUserViaFacebook(context),
+                onPressed: () => {},
               )),
         ),
       ],
@@ -466,6 +476,9 @@ class Controller extends ControllerMVC {
   static Future<bool> signInWithFacebook(context) =>
       Model._signInWithFacebook(context);
 
+  static Future<bool> handleGoogleSignIn(context) =>
+      Model._handleGoogleSignIn(context);
+
   static Future<bool> signInWithEmail(context, email, password) =>
       Model._signInWithEmail(context, email, password);
 
@@ -571,6 +584,19 @@ class Model {
       return true;
     } catch (e) {
       print('Error: $e');
+      return false;
+    }
+  }
+
+  static Future<bool> _handleGoogleSignIn(BuildContext context) async {
+    try {
+      _account = await _googleSignIn.signIn();
+      Scaffold.of(context)
+          .showSnackBar(new SnackBar(content: Text(_account.email)));
+      //  _account.
+      return true;
+    } catch (error) {
+      print(error);
       return false;
     }
   }

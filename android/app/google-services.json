@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "25507272986",
+    "firebase_url": "https://quizapp-areda.firebaseio.com",
+    "project_id": "quizapp-areda",
+    "storage_bucket": "quizapp-areda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25507272986:android:16ad2fbda0118f86dbf4a3",
+        "android_client_info": {
+          "package_name": "com.fizosoft.quizapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "25507272986-iaor17k5sh43bb9s9hfouj1vo6v9kan0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fizosoft.quizapp",
+            "certificate_hash": "2362b7dabe6a19ab1317d0ec058c0bc326b82dfd"
+          }
+        },
+        {
+          "client_id": "25507272986-nofgv0hm1njjjailn8m2u3262r3ednjh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW2ZAMHDP4H0LiTj9kM3TN5rvevLhaX0M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "25507272986-nofgv0hm1njjjailn8m2u3262r3ednjh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
