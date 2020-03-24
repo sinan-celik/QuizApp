@@ -2,7 +2,7 @@ import 'category.dart';
 import 'question.dart';
 import 'theme.dart';
 
-enum AppTab { main, trivia, summary, triviaStats, settings }
+enum AppTab { main, trivia, summary, triviaStats, settings, login }
 
 enum ApiType { mock, remote }
 

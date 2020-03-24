@@ -16,28 +16,41 @@ class MainPage extends StatelessWidget {
 
     return FadeInWidget(
       duration: 750,
-      child: Container(
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(children: <Widget>[
+      // child: Container(
+      //   alignment: Alignment.center,
+      //   child: Column(
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: <Widget>[
+
+      //     ],
+      //   ),
+      // ),
+      child: Flex(
+        direction: Axis.vertical,
+        children: <Widget>[
+          SizedBox(
+            height: 200,
+          ),
+          Expanded(
+            child: Column(
+              children: <Widget>[
                 GestureDetector(
                   child: Container(
                     alignment: Alignment.center,
                     height: 72,
                     width: 180,
                     decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(35),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.blue,
-                              blurRadius: 2.0,
-                              spreadRadius: 2.5),
-                        ]),
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(35),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.blue,
+                            blurRadius: 2.0,
+                            spreadRadius: 2.5),
+                      ],
+                    ),
                     child: const Text(
                       'Oynamaya Başla',
                       style: TextStyle(fontWeight: FontWeight.w500),
@@ -45,37 +58,37 @@ class MainPage extends StatelessWidget {
                   ),
                   onTap: () => appModel.tab.value = AppTab.trivia,
                 ),
-              ]),
-              Container(
-                  padding: const EdgeInsets.only(top: 50.0),
+                SizedBox(
+                  height: 200,
+                ),
+                Align(
                   alignment: Alignment.bottomCenter,
-                  child: Column(children: <Widget>[
-                    GestureDetector(
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 72,
-                        width: 180,
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(35),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.blue,
-                                  blurRadius: 2.0,
-                                  spreadRadius: 2.5),
-                            ]),
-                        child: const Text(
-                          'Oynamaya Başla',
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      GestureDetector(
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 30,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.greenAccent,
+                          ),
+                          child: const Text(
+                            'Bağlan',
+                          ),
                         ),
+                        onTap: () => appModel.tab.value = AppTab.login,
                       ),
-                      onTap: () => appModel.tab.value = AppTab.trivia,
-                    ),
-                  ]))
-            ],
-          )),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

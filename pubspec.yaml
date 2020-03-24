@@ -17,6 +17,10 @@ environment:
   sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
+  font_awesome_flutter: ^8.0.0
+  # cupertino_icons: ^0.1.3
+  mvc_pattern: ^3.8.0
+  flutter_screenutil: ^1.1.0
   after_layout: ^1.0.7+2
   flutter:
     sdk: flutter

@@ -8,4 +8,5 @@ class States {
   final summaryPage = RebuilderState();
   final settingsPage = RebuilderState();
   final tab = RebuilderState();
+  final loginPage = RebuilderState();
 }

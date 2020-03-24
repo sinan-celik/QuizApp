@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:rebuilder/rebuilder.dart';
+import 'package:trivia_rebuilder/login/login_page_widget.dart';
 
 import 'datamodels/app_data.dart';
 import 'models/models.dart';
@@ -95,6 +96,12 @@ class SwitchTabWidget extends StatelessWidget {
             rebuilderState: appModel.states.settingsPage,
             builder: (state, _) => SettingsPage());
         break;
+        case AppTab.login:
+        return Rebuilder(
+            rebuilderState: appModel.states.loginPage,
+            builder: (state, _) => LogInPage());
+        break;
+        
       default:
         return Container();
     }
