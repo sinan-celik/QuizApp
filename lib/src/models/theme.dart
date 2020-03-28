@@ -9,12 +9,12 @@ final Map<String, ThemeData> themes = {
     primaryColorBrightness: Brightness.dark,
     accentColor: Colors.blue[300],
   ),
-  'Dark': ThemeData(
-    brightness: Brightness.dark,
-    backgroundColor: Colors.black,
-    scaffoldBackgroundColor: Colors.black,
-    primaryColor: Colors.blueGrey[900],
-    primaryColorBrightness: Brightness.dark,
-    accentColor: Colors.blue[900],
-  )
+  // 'Dark': ThemeData(
+  //   brightness: Brightness.dark,
+  //   backgroundColor: Colors.black,
+  //   scaffoldBackgroundColor: Colors.black,
+  //   primaryColor: Colors.blueGrey[900],
+  //   primaryColorBrightness: Brightness.dark,
+  //   accentColor: Colors.blue[900],
+  // )
 };

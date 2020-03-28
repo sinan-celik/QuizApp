@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:rebuilder/rebuilder.dart';
-import 'package:trivia_rebuilder/login/login_page_widget.dart';
+import 'package:quiz_app/login/login_page_widget.dart';
 
 import 'datamodels/app_data.dart';
 import 'models/models.dart';

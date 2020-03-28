@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 import 'package:frideos/frideos.dart';
-import 'package:trivia_rebuilder/src/models/answer.dart';
+import 'package:quiz_app/src/models/answer.dart';
 
 import '../styles.dart';
 import '../datamodels/trivia_data.dart';

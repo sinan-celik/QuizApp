@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:rebuilder/rebuilder.dart';
-import 'package:trivia_rebuilder/src/models/models.dart';
+import 'package:quiz_app/src/models/models.dart';
 
 import 'src/homepage.dart';
 import 'src/datamodels/app_data.dart';
@@ -123,7 +123,7 @@ class MaterialPage extends StatelessWidget {
         builder: (state, data) {
           // To rebuild the widget tree, use the materialState
           return MaterialApp(
-              title: 'Trivia example',
+              title: 'Areda Quiz',
               theme: themes[data.currentTheme],
               home: HomePage());
         });

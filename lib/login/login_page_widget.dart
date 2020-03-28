@@ -5,13 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rebuilder/rebuilder.dart';
-// import 'package:trivia_rebuilder/login/CustomIcons.dart';
+// import 'package:quiz_app/login/CustomIcons.dart';
 // import 'package:momentum/Screens/Profile.dart';
-import 'package:trivia_rebuilder/login/SocialIcons.dart';
+import 'package:quiz_app/login/SocialIcons.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:trivia_rebuilder/src/datamodels/app_data.dart';
-import 'package:trivia_rebuilder/src/models/models.dart';
+import 'package:quiz_app/login/login_api.dart';
+import 'package:quiz_app/src/datamodels/app_data.dart';
+import 'package:quiz_app/src/models/models.dart';
 
 bool _signUpActive = false;
 bool _signInActive = true;
@@ -20,6 +21,8 @@ TextEditingController _emailController = TextEditingController();
 TextEditingController _passwordController = TextEditingController();
 TextEditingController _newEmailController = TextEditingController();
 TextEditingController _newPasswordController = TextEditingController();
+TextEditingController _newNameController = TextEditingController();
+TextEditingController _newPhoneController = TextEditingController();
 // final FirebaseAuth _auth = FirebaseAuth.instance;
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -84,23 +87,23 @@ class _LogInPageState extends StateMVC<LogInPage> {
             onPressed: () => _appModel.tab.value = AppTab.main,
           ),
         ),
-        Container(
-          child: Padding(
-              padding: EdgeInsets.only(top: 2.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  // Text(Controller.displayLogoTitle,
-                  //     style: CustomTextStyle.title(context)),
-                  // Text(
-                  //   Controller.displayLogoSubTitle,
-                  //   style: CustomTextStyle.subTitle(context),
-                  // ),
-                ],
-              )),
-          width: ScreenUtil().setWidth(750),
-          height: ScreenUtil().setHeight(190),
-        ),
+        // Container(
+        //   child: Padding(
+        //       padding: EdgeInsets.only(top: 2.0),
+        //       child: Column(
+        //         mainAxisAlignment: MainAxisAlignment.center,
+        //         children: <Widget>[
+        //           // Text(Controller.displayLogoTitle,
+        //           //     style: CustomTextStyle.title(context)),
+        //           // Text(
+        //           //   Controller.displayLogoSubTitle,
+        //           //   style: CustomTextStyle.subTitle(context),
+        //           // ),
+        //         ],
+        //       )),
+        //   width: ScreenUtil().setWidth(750),
+        //   height: ScreenUtil().setHeight(190),
+        // ),
         // SizedBox(
         //   height: ScreenUtil().setHeight(60),
         // ),
@@ -340,8 +343,55 @@ class _LogInPageState extends StateMVC<LogInPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        SizedBox(
-          height: ScreenUtil().setHeight(30),
+        Container(
+          child: Padding(
+            padding: EdgeInsets.only(),
+            child: TextField(
+              obscureText: false,
+              style: CustomTextStyle.formField(context),
+              controller: _newNameController,
+              decoration: InputDecoration(
+                //Add th Hint text here.
+                hintText: Controller.displayHintTextNewName,
+                hintStyle: CustomTextStyle.formField(context),
+                enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).accentColor, width: 1.0)),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).accentColor, width: 1.0)),
+                prefixIcon: const Icon(
+                  Icons.person_add,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Container(
+          child: Padding(
+            padding: EdgeInsets.only(),
+            child: TextField(
+              obscureText: false,
+              style: CustomTextStyle.formField(context),
+              controller: _newPhoneController,
+              decoration: InputDecoration(
+                //Add th Hint text here.
+                hintText: Controller.displayHintTextNewPhone,
+                hintStyle: CustomTextStyle.formField(context),
+                enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).accentColor, width: 1.0)),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Theme.of(context).accentColor, width: 1.0)),
+                prefixIcon: const Icon(
+                  Icons.phone_android,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
         ),
         Container(
           child: Padding(
@@ -367,9 +417,6 @@ class _LogInPageState extends StateMVC<LogInPage> {
               ),
             ),
           ),
-        ),
-        SizedBox(
-          height: ScreenUtil().setHeight(50),
         ),
         Container(
           child: Padding(
@@ -397,7 +444,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
           ),
         ),
         SizedBox(
-          height: ScreenUtil().setHeight(80),
+          height: ScreenUtil().setHeight(30),
         ),
         Container(
           child: Padding(
@@ -409,7 +456,10 @@ class _LogInPageState extends StateMVC<LogInPage> {
               ),
               color: Colors.blueGrey,
               onPressed: () => Controller.signUpWithEmailAndPassword(
-                  _newEmailController, _newPasswordController),
+                  _newEmailController,
+                  _newPasswordController,
+                  _newNameController,
+                  _newPhoneController),
             ),
           ),
         ),
@@ -418,7 +468,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
   }
 
   Widget horizontalLine() => Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Container(
           width: ScreenUtil().setWidth(120),
           height: 1.0,
@@ -468,6 +518,8 @@ class Controller extends ControllerMVC {
   static String get displayHintTextNewEmail => Model._hintTextNewEmail;
 
   static String get displayHintTextNewPassword => Model._hintTextNewPassword;
+  static String get displayHintTextNewName => Model._hintTextNewName;
+  static String get displayHintTextNewPhone => Model._hintTextNewPhone;
 
   static String get displaySignUpButtonTest => Model._signUpButtonText;
 
@@ -498,8 +550,8 @@ class Controller extends ControllerMVC {
   static Future<bool> signInWithEmail(context, email, password) =>
       Model._signInWithEmail(context, email, password);
 
-  static void signUpWithEmailAndPassword(email, password) =>
-      Model._signUpWithEmailAndPassword(email, password);
+  static void signUpWithEmailAndPassword(email, password, name, phone) =>
+      Model._signUpWithEmailAndPassword(email, password, name, phone);
 
   // static Future navigateToProfile(context) => Model._navigateToProfile(context);
 
@@ -527,19 +579,25 @@ class Controller extends ControllerMVC {
 class Model {
   // static String _logoTitle = "MOMENTUM";
   // static String _logoSubTitle = "GROWTH * HAPPENS * TODAY";
-  static String _signInMenuButton = "Giriş Yap";
-  static String _signUpMenuButton = "Kaydol";
-  static String _hintTextEmail = "e-posta";
-  static String _hintTextPassword = "şifre";
-  static String _hintTextNewEmail = "e-postanızı giriniz";
-  static String _hintTextNewPassword = "şifrenizi giriniz";
-  static String _signUpButtonText = "Kaydol";
-  static String _signInWithEmailButtonText = "E-posta ile giriş yap";
-  static String _signInWithGoogleButtonText = "Google ile giriş yap";
-  static String _signInWithFacebookButtonText = "Facebook ile giriş yap";
-  static String _alternativeLogInSeparatorText = "ya da";
-  static String _emailLogInFailed =
-      "Email or Password was incorrect. Please try again";
+  static const String _signInMenuButton = 'Giriş Yap';
+  static const String _signUpMenuButton = 'Kaydol';
+
+  static const String _hintTextEmail = 'e-posta';
+  static const String _hintTextPassword = 'şifre';
+
+  static const String _hintTextNewEmail = 'E-posta adresiniz';
+  static const String _hintTextNewPassword = 'Şifreniz';
+  static const String _hintTextNewName = 'Adınız';
+  static const String _hintTextNewPhone = 'Telefonunuz';
+  static const String _signUpButtonText = 'Kaydol';
+
+  static const String _signInWithEmailButtonText = 'E-posta ile giriş yap';
+  static const String _signInWithGoogleButtonText = 'Google ile giriş yap';
+  static const String _signInWithFacebookButtonText = 'Facebook ile giriş yap';
+  static const String _alternativeLogInSeparatorText = 'ya da';
+
+  static const String _emailLogInFailed =
+      'Email or Password was incorrect. Please try again';
 
   static void _changeToSignUp() {
     _signUpActive = true;
@@ -591,12 +649,20 @@ class Model {
   }
 
   static Future<bool> _signUpWithEmailAndPassword(
-      TextEditingController email, TextEditingController password) async {
+      TextEditingController email,
+      TextEditingController password,
+      TextEditingController name,
+      TextEditingController phone) async {
     try {
-      // AuthResult result = await FirebaseAuth.instance
-      //     .createUserWithEmailAndPassword(
-      //     email: email.text.trim().toLowerCase(), password: password.text);
+      var loginApi = LoginApi();
+      var result = loginApi.registerUserWithEmail(
+          email: email.text.trim().toLowerCase(),
+          pass: password.text,
+          name: name.text,
+          phone: phone.text);
+
       // print('Signed up: ${result.user.uid}');
+
       return true;
     } catch (e) {
       print('Error: $e');
@@ -625,19 +691,19 @@ class Model {
   // }
 }
 
-ThemeData _buildDarkTheme() {
-  final baseTheme = ThemeData(
-    fontFamily: "Open Sans",
-  );
-  return baseTheme.copyWith(
-    brightness: Brightness.dark,
-    primaryColor: Color(0xFF143642),
-    primaryColorLight: Color(0xFF26667d),
-    primaryColorDark: Color(0xFF08161b),
-    primaryColorBrightness: Brightness.dark,
-    accentColor: Colors.white,
-  );
-}
+// ThemeData _buildDarkTheme() {
+//   final baseTheme = ThemeData(
+//     fontFamily: "Open Sans",
+//   );
+//   return baseTheme.copyWith(
+//     brightness: Brightness.dark,
+//     primaryColor: Color(0xFF143642),
+//     primaryColorLight: Color(0xFF26667d),
+//     primaryColorDark: Color(0xFF08161b),
+//     primaryColorBrightness: Brightness.dark,
+//     accentColor: Colors.white,
+//   );
+// }
 
 class CustomTextStyle {
   static TextStyle formField(BuildContext context) {

@@ -3,7 +3,7 @@
 // import 'question.dart';
 
 class Settings {
-  String currentTheme;
+  String currentTheme = 'Default';
   // ApiType apiType = ApiType.remote;
   int countdown = 10000; // milliseconds
   int numQuestions = 4;

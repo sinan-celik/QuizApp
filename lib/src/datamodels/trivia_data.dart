@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:rebuilder/rebuilder.dart';
-import 'package:trivia_rebuilder/src/models/answer.dart';
+import 'package:quiz_app/src/models/answer.dart';
 
 import '../models/models.dart';
 import '../models/question.dart';
