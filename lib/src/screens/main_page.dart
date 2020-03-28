@@ -61,10 +61,23 @@ class MainPage extends StatelessWidget {
                 SizedBox(
                   height: 200,
                 ),
+                SizedBox(
+                  width: 300,
+                  child: const Text(
+                    'Sizi tanıyabilmemiz ve uygulamanın ayrıcalıklarından yararlanabilmeniz için lütfen bağlanın:',
+                    overflow: TextOverflow.fade,
+                    softWrap: true,
+                    maxLines: 3,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.grey
+                    ),
+                  ),
+                ),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     // crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       GestureDetector(
@@ -73,7 +86,7 @@ class MainPage extends StatelessWidget {
                           height: 30,
                           width: 100,
                           decoration: BoxDecoration(
-                            color: Colors.greenAccent,
+                            color: Colors.grey,
                           ),
                           child: const Text(
                             'Bağlan',

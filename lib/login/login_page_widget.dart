@@ -4,11 +4,14 @@ import 'package:flutter/services.dart';
 // import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rebuilder/rebuilder.dart';
 // import 'package:trivia_rebuilder/login/CustomIcons.dart';
 // import 'package:momentum/Screens/Profile.dart';
 import 'package:trivia_rebuilder/login/SocialIcons.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:trivia_rebuilder/src/datamodels/app_data.dart';
+import 'package:trivia_rebuilder/src/models/models.dart';
 
 bool _signUpActive = false;
 bool _signInActive = true;
@@ -27,7 +30,7 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
 );
 
 GoogleSignInAccount _account;
-
+AppModel _appModel;
 // class LoginPageWidget extends StatelessWidget {
 //   LoginPageWidget({Key key}) : super(key: key);
 
@@ -61,6 +64,9 @@ class _LogInPageState extends StateMVC<LogInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final appModel = DataModelProvider.of<AppModel>(context);
+    _appModel = appModel;
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -68,6 +74,16 @@ class _LogInPageState extends StateMVC<LogInPage> {
     ScreenUtil.init(context, width: 750, height: 1334, allowFontScaling: true);
     return Column(
       children: <Widget>[
+        AppBar(
+          centerTitle: true,
+          title: const Text(
+            'Bağlan',
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => _appModel.tab.value = AppTab.main,
+          ),
+        ),
         Container(
           child: Padding(
               padding: EdgeInsets.only(top: 2.0),
@@ -592,7 +608,9 @@ class Model {
     try {
       _account = await _googleSignIn.signIn();
       Scaffold.of(context)
-          .showSnackBar(new SnackBar(content: Text(_account.email)));
+          .showSnackBar(SnackBar(content: Text(_account.email)));
+
+      _appModel.tab.value = AppTab.main;
       //  _account.
       return true;
     } catch (error) {
