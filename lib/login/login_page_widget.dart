@@ -25,6 +25,8 @@ TextEditingController _newNameController = TextEditingController();
 TextEditingController _newPhoneController = TextEditingController();
 // final FirebaseAuth _auth = FirebaseAuth.instance;
 
+TextInputType textInputType = TextInputType.phone;
+
 GoogleSignIn _googleSignIn = GoogleSignIn(
   scopes: [
     'email',
@@ -34,6 +36,11 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
 
 GoogleSignInAccount _account;
 AppModel _appModel;
+
+var email = 'tony@starkindustries.com';
+bool emailValid = RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+    .hasMatch(email);
 // class LoginPageWidget extends StatelessWidget {
 //   LoginPageWidget({Key key}) : super(key: key);
 
@@ -75,103 +82,102 @@ class _LogInPageState extends StateMVC<LogInPage> {
       DeviceOrientation.portraitDown,
     ]);
     ScreenUtil.init(context, width: 750, height: 1334, allowFontScaling: true);
-    return Column(
-      children: <Widget>[
-        AppBar(
-          centerTitle: true,
-          title: const Text(
-            'Bağlan',
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => _appModel.tab.value = AppTab.main,
-          ),
-        ),
-        // Container(
-        //   child: Padding(
-        //       padding: EdgeInsets.only(top: 2.0),
-        //       child: Column(
-        //         mainAxisAlignment: MainAxisAlignment.center,
-        //         children: <Widget>[
-        //           // Text(Controller.displayLogoTitle,
-        //           //     style: CustomTextStyle.title(context)),
-        //           // Text(
-        //           //   Controller.displayLogoSubTitle,
-        //           //   style: CustomTextStyle.subTitle(context),
-        //           // ),
-        //         ],
-        //       )),
-        //   width: ScreenUtil().setWidth(750),
-        //   height: ScreenUtil().setHeight(190),
-        // ),
-        // SizedBox(
-        //   height: ScreenUtil().setHeight(60),
-        // ),
-        Container(
-          child: Padding(
-            padding: EdgeInsets.only(left: 25.0, right: 25.0),
-            child: IntrinsicWidth(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  OutlineButton(
-                    onPressed: () =>
-                        setState(() => Controller.changeToSignIn()),
-                    borderSide: new BorderSide(
-                      style: BorderStyle.none,
-                    ),
-                    child: new Text(Controller.displaySignInMenuButton,
-                        style: _signInActive
-                            ? TextStyle(
-                                fontSize: 22,
-                                color: Theme.of(context).accentColor,
-                                fontWeight: FontWeight.bold)
-                            : TextStyle(
-                                fontSize: 16,
-                                color: Theme.of(context).accentColor,
-                                fontWeight: FontWeight.normal)),
-                  ),
-                  OutlineButton(
-                    onPressed: () =>
-                        setState(() => Controller.changeToSignUp()),
-                    borderSide: BorderSide(
-                      style: BorderStyle.none,
-                    ),
-                    child: Text(Controller.displaySignUpMenuButton,
-                        style: _signUpActive
-                            ? TextStyle(
-                                fontSize: 22,
-                                color: Theme.of(context).accentColor,
-                                fontWeight: FontWeight.bold)
-                            : TextStyle(
-                                fontSize: 16,
-                                color: Theme.of(context).accentColor,
-                                fontWeight: FontWeight.normal)),
-                  )
-                ],
-              ),
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          AppBar(
+            centerTitle: true,
+            title: const Text(
+              'Bağlan',
+            ),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => _appModel.tab.value = AppTab.main,
             ),
           ),
-          width: ScreenUtil().setWidth(750),
-          height: ScreenUtil().setHeight(170),
-        ),
-        SizedBox(
-          height: ScreenUtil().setHeight(10),
-        ),
-        Container(
-          child: Padding(
-              padding: EdgeInsets.only(left: 30.0, right: 30.0),
-              child: _signInActive ? _showSignIn(context) : _showSignUp()),
-          width: ScreenUtil().setWidth(750),
-          height: ScreenUtil().setHeight(778),
-        ),
-      ],
+          // Container(
+          //   child: Padding(
+          //       padding: EdgeInsets.only(top: 2.0),
+          //       child: Column(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         children: <Widget>[
+          //           // Text(Controller.displayLogoTitle,
+          //           //     style: CustomTextStyle.title(context)),
+          //           // Text(
+          //           //   Controller.displayLogoSubTitle,
+          //           //   style: CustomTextStyle.subTitle(context),
+          //           // ),
+          //         ],
+          //       )),
+          //   width: ScreenUtil().setWidth(750),
+          //   height: ScreenUtil().setHeight(190),
+          // ),
+          // SizedBox(
+          //   height: ScreenUtil().setHeight(60),
+          // ),
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+              child: IntrinsicWidth(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    OutlineButton(
+                      onPressed: () => setState(Controller.changeToSignIn),
+                      borderSide: const BorderSide(
+                        style: BorderStyle.none,
+                      ),
+                      child: Text(Controller.displaySignInMenuButton,
+                          style: _signInActive
+                              ? TextStyle(
+                                  fontSize: 22,
+                                  color: Theme.of(context).accentColor,
+                                  fontWeight: FontWeight.bold)
+                              : TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).accentColor,
+                                  fontWeight: FontWeight.normal)),
+                    ),
+                    OutlineButton(
+                      onPressed: () => setState(Controller.changeToSignUp),
+                      borderSide: const BorderSide(
+                        style: BorderStyle.none,
+                      ),
+                      child: Text(Controller.displaySignUpMenuButton,
+                          style: _signUpActive
+                              ? TextStyle(
+                                  fontSize: 22,
+                                  color: Theme.of(context).accentColor,
+                                  fontWeight: FontWeight.bold)
+                              : TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).accentColor,
+                                  fontWeight: FontWeight.normal)),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            width: ScreenUtil().setWidth(750),
+            height: ScreenUtil().setHeight(170),
+          ),
+          SizedBox(
+            height: ScreenUtil().setHeight(10),
+          ),
+          Container(
+            child: Padding(
+                padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                child: _signInActive ? _showSignIn(context) : _showSignUp()),
+            width: ScreenUtil().setWidth(750),
+            height: ScreenUtil().setHeight(778),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _showSignIn(context) {
-    return Column(
+  Widget _showSignIn(context) => Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         SizedBox(
@@ -179,7 +185,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
         ),
         Container(
           child: Padding(
-            padding: EdgeInsets.only(),
+            padding: const EdgeInsets.only(),
             child: TextField(
               style: TextStyle(color: Theme.of(context).accentColor),
               controller: _emailController,
@@ -206,7 +212,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
         ),
         Container(
           child: Padding(
-            padding: EdgeInsets.only(),
+            padding: const EdgeInsets.only(),
             child: TextField(
               obscureText: true,
               style: TextStyle(color: Theme.of(context).accentColor),
@@ -234,11 +240,11 @@ class _LogInPageState extends StateMVC<LogInPage> {
         ),
         Container(
           child: Padding(
-            padding: EdgeInsets.only(),
+            padding: const EdgeInsets.only(),
             child: RaisedButton(
               child: Row(
                 children: <Widget>[
-                  SocialIcon(iconData: FontAwesomeIcons.envelope),
+                  const SocialIcon(iconData: FontAwesomeIcons.envelope),
                   Expanded(
                     child: Text(
                       Controller.displaySignInEmailButton,
@@ -260,7 +266,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
         ),
         Container(
           child: Padding(
-            padding: EdgeInsets.only(),
+            padding: const EdgeInsets.only(),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -277,7 +283,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
         ),
         Container(
           child: Padding(
-              padding: EdgeInsets.only(),
+              padding: const EdgeInsets.only(),
               child: RaisedButton(
                 child: Row(
                   children: <Widget>[
@@ -291,7 +297,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
                     )
                   ],
                 ),
-                color: Color(0xFF3C5A99),
+                color: const Color(0xFF3C5A99),
                 onPressed: () => {Controller.handleGoogleSignIn(context)},
               )),
         ),
@@ -300,7 +306,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
         ),
         Container(
           child: Padding(
-            padding: EdgeInsets.only(),
+            padding: const EdgeInsets.only(),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -317,7 +323,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
         ),
         Container(
           child: Padding(
-              padding: EdgeInsets.only(),
+              padding: const EdgeInsets.only(),
               child: RaisedButton(
                 child: Row(
                   children: <Widget>[
@@ -331,21 +337,19 @@ class _LogInPageState extends StateMVC<LogInPage> {
                     )
                   ],
                 ),
-                color: Color(0xFF3C5A99),
+                color: const Color(0xFF3C5A99),
                 onPressed: () => {},
               )),
         ),
       ],
     );
-  }
 
-  Widget _showSignUp() {
-    return Column(
+  Widget _showSignUp() => Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Container(
           child: Padding(
-            padding: EdgeInsets.only(),
+            padding: const EdgeInsets.only(),
             child: TextField(
               obscureText: false,
               style: CustomTextStyle.formField(context),
@@ -370,8 +374,11 @@ class _LogInPageState extends StateMVC<LogInPage> {
         ),
         Container(
           child: Padding(
-            padding: EdgeInsets.only(),
+            padding: const EdgeInsets.only(),
             child: TextField(
+              inputFormatters: [
+                WhitelistingTextInputFormatter(RegExp('[0-9]')),
+              ],
               obscureText: false,
               style: CustomTextStyle.formField(context),
               controller: _newPhoneController,
@@ -390,13 +397,15 @@ class _LogInPageState extends StateMVC<LogInPage> {
                   color: Colors.white,
                 ),
               ),
+              keyboardType: TextInputType.phone,
             ),
           ),
         ),
         Container(
           child: Padding(
-            padding: EdgeInsets.only(),
+            padding: const EdgeInsets.only(),
             child: TextField(
+              // inputFormatters: [WhitelistingTextInputFormatter(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")),],
               obscureText: false,
               style: CustomTextStyle.formField(context),
               controller: _newEmailController,
@@ -415,12 +424,13 @@ class _LogInPageState extends StateMVC<LogInPage> {
                   color: Colors.white,
                 ),
               ),
+              keyboardType: TextInputType.emailAddress,
             ),
           ),
         ),
         Container(
           child: Padding(
-            padding: EdgeInsets.only(),
+            padding: const EdgeInsets.only(),
             child: TextField(
               obscureText: true,
               style: CustomTextStyle.formField(context),
@@ -440,6 +450,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
                   color: Colors.white,
                 ),
               ),
+              // keyboardType: TextInputType.visiblePassword,
             ),
           ),
         ),
@@ -448,7 +459,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
         ),
         Container(
           child: Padding(
-            padding: EdgeInsets.only(),
+            padding: const EdgeInsets.only(),
             child: RaisedButton(
               child: Text(
                 Controller.displaySignUpMenuButton,
@@ -465,7 +476,6 @@ class _LogInPageState extends StateMVC<LogInPage> {
         ),
       ],
     );
-  }
 
   Widget horizontalLine() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -480,7 +490,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
 }
 
 class LogInPage extends StatefulWidget {
-  LogInPage({Key key}) : super(key: key);
+ const LogInPage({Key key}) : super(key: key);
 
   @protected
   @override
@@ -490,13 +500,13 @@ class LogInPage extends StatefulWidget {
 class Controller extends ControllerMVC {
   /// Singleton Factory
   factory Controller() {
-    if (_this == null) _this = Controller._();
+    // if (_this == null) _this = Controller._();
+    _this ??= Controller._();
     return _this;
   }
 
-  static Controller _this;
-
   Controller._();
+  static Controller _this;
 
   /// Allow for easy access to 'the Controller' throughout the application.
   static Controller get con => _this;
@@ -654,8 +664,8 @@ class Model {
       TextEditingController name,
       TextEditingController phone) async {
     try {
-      var loginApi = LoginApi();
-      var result = loginApi.registerUserWithEmail(
+      final loginApi = LoginApi();
+      final result = loginApi.registerUserWithEmail(
           email: email.text.trim().toLowerCase(),
           pass: password.text,
           name: name.text,
@@ -706,28 +716,18 @@ class Model {
 // }
 
 class CustomTextStyle {
-  static TextStyle formField(BuildContext context) {
-    return Theme.of(context).textTheme.title.copyWith(
+  static TextStyle formField(BuildContext context) => Theme.of(context).textTheme.title.copyWith(
         fontSize: 18.0, fontWeight: FontWeight.normal, color: Colors.white);
-  }
 
-  static TextStyle title(BuildContext context) {
-    return Theme.of(context).textTheme.title.copyWith(
+  static TextStyle title(BuildContext context) => Theme.of(context).textTheme.title.copyWith(
         fontSize: 34, fontWeight: FontWeight.bold, color: Colors.white);
-  }
 
-  static TextStyle subTitle(BuildContext context) {
-    return Theme.of(context).textTheme.title.copyWith(
+  static TextStyle subTitle(BuildContext context) => Theme.of(context).textTheme.title.copyWith(
         fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white);
-  }
 
-  static TextStyle button(BuildContext context) {
-    return Theme.of(context).textTheme.title.copyWith(
+  static TextStyle button(BuildContext context) => Theme.of(context).textTheme.title.copyWith(
         fontSize: 20, fontWeight: FontWeight.normal, color: Colors.white);
-  }
 
-  static TextStyle body(BuildContext context) {
-    return Theme.of(context).textTheme.title.copyWith(
+  static TextStyle body(BuildContext context) => Theme.of(context).textTheme.title.copyWith(
         fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white);
-  }
 }

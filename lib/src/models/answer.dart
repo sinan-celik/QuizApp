@@ -9,8 +9,7 @@ class AnswerModel {
       this.isTrue,
       this.answerImage});
 
-  factory AnswerModel.fromJson(Map<String, dynamic> json) {
-    return AnswerModel(
+  factory AnswerModel.fromJson(Map<String, dynamic> json) => AnswerModel(
         id: json['id'],
         projectCode: json['projectCode'],
         questionId: json['questionId'],
@@ -21,7 +20,6 @@ class AnswerModel {
         // .map((answer) => answer.toString())
         // .toList()
         );
-  }
 
   int id;
   String projectCode;
@@ -39,15 +37,13 @@ class Answer {
       this.answerText,
       this.isTrue,
       this.answerImage});
-  factory Answer.fromAnswerModel(AnswerModel model) {
-    return Answer(
+  factory Answer.fromAnswerModel(AnswerModel model) => Answer(
         id: model.id,
         projectCode: model.projectCode,
         questionId: model.questionId,
         answerText: model.answerText,
         isTrue: model.isTrue,
         answerImage: model.answerImage);
-  }
 
   int id;
   String projectCode;

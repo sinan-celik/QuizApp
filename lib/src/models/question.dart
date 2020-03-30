@@ -12,8 +12,7 @@ class QuestionModel {
       this.incorrectAnswers,
       this.answerType});
 
-  factory QuestionModel.fromJson(Map<String, dynamic> json) {
-    return QuestionModel(
+  factory QuestionModel.fromJson(Map<String, dynamic> json) => QuestionModel(
         questionImage: json['questionImage'],
         question: json['question'],
         answerType: json['answerType'],
@@ -23,8 +22,7 @@ class QuestionModel {
             // .map((answer) => answer.toString())
             .map((answer) =>
                 Answer.fromAnswerModel(AnswerModel.fromJson(answer)))
-            .toList()); 
-  }
+            .toList());
 
   String questionImage;
   String question;
@@ -64,11 +62,7 @@ class Question {
   int correctAnswerIndex;
   int chosenAnswerIndex;
 
-  bool isCorrect(Answer answer) {
-    return answers.indexOf(answer) == correctAnswerIndex;
-  }
+  bool isCorrect(Answer answer) => answers.indexOf(answer) == correctAnswerIndex;
 
-  bool isChosen(Answer answer) {
-    return answers.indexOf(answer) == chosenAnswerIndex;
-  }
+  bool isChosen(Answer answer) => answers.indexOf(answer) == chosenAnswerIndex;
 }

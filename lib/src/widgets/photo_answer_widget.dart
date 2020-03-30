@@ -2,14 +2,13 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-
 import 'package:frideos/frideos.dart';
 import 'package:quiz_app/src/models/answer.dart';
 
-import '../styles.dart';
 import '../datamodels/trivia_data.dart';
 import '../models/models.dart';
 import '../models/question.dart';
+import '../styles.dart';
 
 const questionLeadings = ['A', 'B', 'C', 'D'];
 const boxHeight = 130.0;

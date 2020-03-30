@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:frideos/frideos.dart';
 import 'package:rebuilder/rebuilder.dart';
 
-import '../models/category.dart';
-import '../models/models.dart';
 import '../models/question.dart';
 import '../models/settings.dart';
 import '../models/states.dart';

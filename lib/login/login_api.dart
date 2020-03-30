@@ -4,15 +4,15 @@ import 'package:http/http.dart' as http;
 class LoginApi {
   Future<bool> registerUserWithEmail(
       {String email, String name, String pass, String phone}) async {
-    var url = 'http://10.0.2.2:81/api/Auth/register';
-    var _body = json.encode({
+    const url = 'http://10.0.2.2:81/api/Auth/register';
+    final _body = json.encode({
       'email': email,
       'password': pass,
       'name': name,
       'phone': phone,
     });
 
-    Map<String, String> headers = {
+    final Map<String, String> headers = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
     };

@@ -4,7 +4,6 @@ import 'package:rebuilder/rebuilder.dart';
 
 import '../datamodels/app_data.dart';
 import '../models/models.dart';
-import '../models/question.dart';
 import '../models/theme.dart';
 
 class SettingsPage extends StatefulWidget {

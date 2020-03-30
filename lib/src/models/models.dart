@@ -1,6 +1,3 @@
-import 'category.dart';
-import 'question.dart';
-import 'theme.dart';
 
 enum AppTab { main, trivia, summary, triviaStats, settings, login }
 

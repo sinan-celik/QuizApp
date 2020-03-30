@@ -1,10 +1,10 @@
 import 'package:rebuilder/rebuilder.dart';
 
-import 'settings_data.dart';
-import 'trivia_data.dart';
 import '../models/models.dart';
 import '../models/states.dart';
 import '../repository/repository.dart';
+import 'settings_data.dart';
+import 'trivia_data.dart';
 
 class AppModel extends DataModel {
   factory AppModel() => _singletonAppModel;

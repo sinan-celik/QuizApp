@@ -51,7 +51,7 @@ class TriviaModel extends DataModel {
     // To show the main page and summary buttons
     triviaStatus.isTriviaEnd = false;
 
-    Timer(Duration(milliseconds: 1500), () {
+    Timer(const Duration(milliseconds: 1500), () {
       // Setting this flag to true on changing the question
       // the countdown bar animation starts.
       triviaStatus.isTriviaPlaying = true;
@@ -66,7 +66,7 @@ class TriviaModel extends DataModel {
 
   void playTrivia() {
     states.triviaPage.rebuild();
-    timer = Timer.periodic(Duration(milliseconds: refreshTime), (t) {
+    timer = Timer.periodic(const Duration(milliseconds: refreshTime), (t) {
       currentTime = refreshTime * t.tick;
 
       if (currentTime > settings.countdown) {
@@ -87,7 +87,7 @@ class TriviaModel extends DataModel {
     states.triviaPage.rebuild();
     stopTimer();
 
-    Timer(Duration(milliseconds: 1500), () {
+    Timer(const Duration(milliseconds: 1500), () {
       // this is reset here to not trigger the start of the
       // countdown animation while waiting for the summary page.
       triviaStatus.isAnswerChosen = false;

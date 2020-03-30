@@ -4,9 +4,7 @@ import 'package:frideos/frideos.dart';
 import 'package:rebuilder/rebuilder.dart';
 
 import '../datamodels/app_data.dart';
-import '../models/category.dart';
 import '../models/models.dart';
-import '../models/settings.dart';
 
 class MainPage extends StatelessWidget {
   @override
@@ -28,7 +26,7 @@ class MainPage extends StatelessWidget {
       child: Flex(
         direction: Axis.vertical,
         children: <Widget>[
-          SizedBox(
+          const SizedBox(
             height: 200,
           ),
           Expanded(
@@ -58,12 +56,12 @@ class MainPage extends StatelessWidget {
                   ),
                   onTap: () => appModel.tab.value = AppTab.trivia,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 200,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 300,
-                  child: const Text(
+                  child: Text(
                     'Sizi tanıyabilmemiz ve uygulamanın ayrıcalıklarından yararlanabilmeniz için lütfen bağlanın:',
                     overflow: TextOverflow.fade,
                     softWrap: true,
@@ -85,7 +83,7 @@ class MainPage extends StatelessWidget {
                           alignment: Alignment.center,
                           height: 30,
                           width: 100,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.grey,
                           ),
                           child: const Text(

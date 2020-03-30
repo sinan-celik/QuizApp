@@ -24,14 +24,13 @@ class HomePage extends StatelessWidget {
     return Rebuilder<RebuilderObject>(
         dataModel: appModel.tab,
         rebuilderState: appModel.states.tab,
-        builder: (state, data) {
-          return Scaffold(
+        builder: (state, data) => Scaffold(
+              // resizeToAvoidBottomInset: false,
               appBar: data.value != AppTab.main ? null : AppBar(),
               drawer: DrawerWidget(),
               body: SwitchTabWidget(
                 appModel: appModel,
-              ));
-        });
+              )));
   }
 }
 
@@ -50,20 +49,11 @@ class SwitchTabWidget extends StatelessWidget {
           rebuilderState: appModel.states.mainPage,
           builder: (state, _) => FutureBuilder(
               // future: categoriesFuture,
-              builder: (context, snapshot) {
-               return MainPage();
-                // if (!snapshot.hasData) {
-                //   return Center(child: const CircularProgressIndicator());
-                // } else {
-                //   // appModel.settingsModel.settings.categoryChosen =
-                //   //     appModel.repository.categories.first;
-                //   return MainPage();
-                // }
-              }),
+              builder: (context, snapshot) => MainPage()),
         );
         break;
       case AppTab.trivia:
-        Future questionsFuture = appModel.repository.loadQuestions(
+        final Future questionsFuture = appModel.repository.loadQuestions(
             numQuestions: appModel.settingsModel.settings.numQuestions,
             // category: appModel.settingsModel.settings.categoryChosen,
             // difficulty: appModel.settingsModel.settings.questionsDifficulty,
@@ -75,12 +65,12 @@ class SwitchTabWidget extends StatelessWidget {
               future: questionsFuture,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(child: const CircularProgressIndicator());
-                } else {                 
+                  return const Center(child: CircularProgressIndicator());
+                } else {
                   return TriviaPage(
                     appModel: appModel,
                     questions: snapshot.data,
-                  );                  
+                  );
                 }
               }),
         );
@@ -96,16 +86,15 @@ class SwitchTabWidget extends StatelessWidget {
             rebuilderState: appModel.states.settingsPage,
             builder: (state, _) => SettingsPage());
         break;
-        case AppTab.login:
+      case AppTab.login:
         return Rebuilder(
             rebuilderState: appModel.states.loginPage,
-            builder: (state, _) => LogInPage());
+            builder: (state, _) => const LogInPage());
         break;
-        
+
       default:
         return Container();
     }
-    ;
   }
 }
 
@@ -118,8 +107,8 @@ class DrawerWidget extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Center(
-              child: const Text(
+            child: const Center(
+              child: Text(
                 'AREDA',
                 style: TextStyle(
                   fontSize: 36.0,

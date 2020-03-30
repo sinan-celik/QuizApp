@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../styles.dart';
 import '../models/question.dart';
+import '../styles.dart';
 
 class SummaryAnswers extends StatelessWidget {
   const SummaryAnswers({Key key, this.index, this.question}) : super(key: key);
@@ -12,22 +11,19 @@ class SummaryAnswers extends StatelessWidget {
   List<Widget> _buildAnswers(Question question) {
     final widgets = List<Widget>()
       ..addAll(
-        question.answers.map((answer) {
-          return Text(
+        question.answers.map((answer) => Text(
             answer.answerText,
             style: question.isCorrect(answer)
                 ? correctAnswerStyle
                 : question.isChosen(answer) ? wrongAnswerStyle : notChosenStyle,
-          );
-        }),
+          )),
       );
 
     return widgets;
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       padding: const EdgeInsets.symmetric(vertical: 18),
       child: Column(
         children: <Widget>[
@@ -57,5 +53,4 @@ class SummaryAnswers extends StatelessWidget {
         ],
       ),
     );
-  }
 }
