@@ -28,6 +28,7 @@ dependencies:
   frideos: ^0.6.2
   rebuilder: ^0.2.0 
   http:  
+  toast: ^0.1.5
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,9 +1,12 @@
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
 import 'package:rebuilder/rebuilder.dart';
 // import 'package:quiz_app/login/CustomIcons.dart';
 // import 'package:momentum/Screens/Profile.dart';
@@ -13,6 +16,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:quiz_app/login/login_api.dart';
 import 'package:quiz_app/src/datamodels/app_data.dart';
 import 'package:quiz_app/src/models/models.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
+import 'package:toast/toast.dart';
 
 bool _signUpActive = false;
 bool _signInActive = true;
@@ -36,6 +41,7 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
 
 GoogleSignInAccount _account;
 AppModel _appModel;
+BuildContext _buildContext;
 
 var email = 'tony@starkindustries.com';
 bool emailValid = RegExp(
@@ -76,6 +82,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
   Widget build(BuildContext context) {
     final appModel = DataModelProvider.of<AppModel>(context);
     _appModel = appModel;
+    _buildContext = context;
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -178,304 +185,333 @@ class _LogInPageState extends StateMVC<LogInPage> {
   }
 
   Widget _showSignIn(context) => Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        SizedBox(
-          height: ScreenUtil().setHeight(30),
-        ),
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.only(),
-            child: TextField(
-              style: TextStyle(color: Theme.of(context).accentColor),
-              controller: _emailController,
-              decoration: InputDecoration(
-                hintText: Controller.displayHintTextEmail,
-                hintStyle: CustomTextStyle.formField(context),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).accentColor, width: 1.0)),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).accentColor, width: 1.0)),
-                prefixIcon: const Icon(
-                  FontAwesomeIcons.envelope,
-                  color: Colors.white,
-                ),
-              ),
-              obscureText: false,
-            ),
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          SizedBox(
+            height: ScreenUtil().setHeight(30),
           ),
-        ),
-        SizedBox(
-          height: ScreenUtil().setHeight(1),
-        ),
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.only(),
-            child: TextField(
-              obscureText: true,
-              style: TextStyle(color: Theme.of(context).accentColor),
-              controller: _passwordController,
-              decoration: InputDecoration(
-                //Add th Hint text here.
-                hintText: Controller.displayHintTextPassword,
-                hintStyle: CustomTextStyle.formField(context),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).accentColor, width: 1.0)),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).accentColor, width: 1.0)),
-                prefixIcon: const Icon(
-                  FontAwesomeIcons.unlockAlt,
-                  color: Colors.white,
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.only(),
+              child: TextField(
+                style: TextStyle(color: Theme.of(context).accentColor),
+                controller: _emailController,
+                decoration: InputDecoration(
+                  hintText: Controller.displayHintTextEmail,
+                  hintStyle: CustomTextStyle.formField(context),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).accentColor, width: 1.0)),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).accentColor, width: 1.0)),
+                  prefixIcon: const Icon(
+                    FontAwesomeIcons.envelope,
+                    color: Colors.white,
+                  ),
                 ),
+                obscureText: false,
+                keyboardType: TextInputType.emailAddress,
               ),
             ),
           ),
-        ),
-        SizedBox(
-          height: ScreenUtil().setHeight(40),
-        ),
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.only(),
-            child: RaisedButton(
+          SizedBox(
+            height: ScreenUtil().setHeight(1),
+          ),
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.only(),
+              child: TextField(
+                obscureText: true,
+                style: TextStyle(color: Theme.of(context).accentColor),
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  //Add th Hint text here.
+                  hintText: Controller.displayHintTextPassword,
+                  hintStyle: CustomTextStyle.formField(context),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).accentColor, width: 1.0)),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).accentColor, width: 1.0)),
+                  prefixIcon: const Icon(
+                    FontAwesomeIcons.unlockAlt,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: ScreenUtil().setHeight(40),
+          ),
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.only(),
+              child: RaisedButton(
+                  child: Row(
+                    children: <Widget>[
+                      const SocialIcon(iconData: FontAwesomeIcons.envelope),
+                      Expanded(
+                        child: Text(
+                          Controller.displaySignInEmailButton,
+                          textAlign: TextAlign.center,
+                          style: CustomTextStyle.button(context),
+                        ),
+                      )
+                    ],
+                  ),
+                  color: Colors.blueGrey,
+                  onPressed: () => {
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                          duration: const Duration(seconds: 10),
+                          content: Row(
+                            children: <Widget>[
+                              const CircularProgressIndicator(),
+                              const Text('  Giriş Yapılıyor...')
+                            ],
+                          ),
+                        )),
+                        Controller.tryToLogInUserViaEmail(
+                            context, _emailController, _passwordController)
+                      }
+                  // onPressed: () => {},
+                  ),
+            ),
+          ),
+          SizedBox(
+            height: ScreenUtil().setHeight(30),
+          ),
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.only(),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const SocialIcon(iconData: FontAwesomeIcons.envelope),
-                  Expanded(
-                    child: Text(
-                      Controller.displaySignInEmailButton,
-                      textAlign: TextAlign.center,
-                      style: CustomTextStyle.button(context),
-                    ),
-                  )
+                  horizontalLine(),
+                  Text(Controller.displaySeparatorText,
+                      style: CustomTextStyle.body(context)),
+                  horizontalLine()
                 ],
               ),
-              color: Colors.blueGrey,
-              // onPressed: () => Controller.tryToLogInUserViaEmail(
-              //     context, _emailController, _passwordController),
-              onPressed: () => {},
             ),
           ),
-        ),
-        SizedBox(
-          height: ScreenUtil().setHeight(30),
-        ),
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.only(),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                horizontalLine(),
-                Text(Controller.displaySeparatorText,
-                    style: CustomTextStyle.body(context)),
-                horizontalLine()
-              ],
-            ),
+          SizedBox(
+            height: ScreenUtil().setHeight(30),
           ),
-        ),
-        SizedBox(
-          height: ScreenUtil().setHeight(30),
-        ),
-        Container(
-          child: Padding(
+          Container(
+            child: Padding(
+                padding: const EdgeInsets.only(),
+                child: RaisedButton(
+                  child: Row(
+                    children: <Widget>[
+                      SocialIcon(iconData: FontAwesomeIcons.google),
+                      Expanded(
+                        child: Text(
+                          Controller.displaySignInGoogleButton,
+                          textAlign: TextAlign.center,
+                          style: CustomTextStyle.button(context),
+                        ),
+                      )
+                    ],
+                  ),
+                  color: const Color(0xFF3C5A99),
+                  onPressed: () => {Controller.handleGoogleSignIn(context)},
+                )),
+          ),
+          SizedBox(
+            height: ScreenUtil().setHeight(30),
+          ),
+          Container(
+            child: Padding(
               padding: const EdgeInsets.only(),
-              child: RaisedButton(
-                child: Row(
-                  children: <Widget>[
-                    SocialIcon(iconData: FontAwesomeIcons.google),
-                    Expanded(
-                      child: Text(
-                        Controller.displaySignInGoogleButton,
-                        textAlign: TextAlign.center,
-                        style: CustomTextStyle.button(context),
-                      ),
-                    )
-                  ],
-                ),
-                color: const Color(0xFF3C5A99),
-                onPressed: () => {Controller.handleGoogleSignIn(context)},
-              )),
-        ),
-        SizedBox(
-          height: ScreenUtil().setHeight(30),
-        ),
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.only(),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                horizontalLine(),
-                Text(Controller.displaySeparatorText,
-                    style: CustomTextStyle.body(context)),
-                horizontalLine()
-              ],
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  horizontalLine(),
+                  Text(Controller.displaySeparatorText,
+                      style: CustomTextStyle.body(context)),
+                  horizontalLine()
+                ],
+              ),
             ),
           ),
-        ),
-        SizedBox(
-          height: ScreenUtil().setHeight(30),
-        ),
-        Container(
-          child: Padding(
-              padding: const EdgeInsets.only(),
-              child: RaisedButton(
-                child: Row(
-                  children: <Widget>[
-                    SocialIcon(iconData: FontAwesomeIcons.facebook),
-                    Expanded(
-                      child: Text(
-                        Controller.displaySignInFacebookButton,
-                        textAlign: TextAlign.center,
-                        style: CustomTextStyle.button(context),
-                      ),
-                    )
-                  ],
-                ),
-                color: const Color(0xFF3C5A99),
-                onPressed: () => {},
-              )),
-        ),
-      ],
-    );
+          SizedBox(
+            height: ScreenUtil().setHeight(30),
+          ),
+          Container(
+            child: Padding(
+                padding: const EdgeInsets.only(),
+                child: RaisedButton(
+                  child: Row(
+                    children: <Widget>[
+                      SocialIcon(iconData: FontAwesomeIcons.facebook),
+                      Expanded(
+                        child: Text(
+                          Controller.displaySignInFacebookButton,
+                          textAlign: TextAlign.center,
+                          style: CustomTextStyle.button(context),
+                        ),
+                      )
+                    ],
+                  ),
+                  color: const Color(0xFF3C5A99),
+                  onPressed: () => {},
+                )),
+          ),
+        ],
+      );
 
   Widget _showSignUp() => Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.only(),
-            child: TextField(
-              obscureText: false,
-              style: CustomTextStyle.formField(context),
-              controller: _newNameController,
-              decoration: InputDecoration(
-                //Add th Hint text here.
-                hintText: Controller.displayHintTextNewName,
-                hintStyle: CustomTextStyle.formField(context),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).accentColor, width: 1.0)),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).accentColor, width: 1.0)),
-                prefixIcon: const Icon(
-                  Icons.person_add,
-                  color: Colors.white,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.only(),
+              child: TextField(
+                obscureText: false,
+                style: CustomTextStyle.formField(context),
+                controller: _newNameController,
+                decoration: InputDecoration(
+                  //Add th Hint text here.
+                  hintText: Controller.displayHintTextNewName,
+                  hintStyle: CustomTextStyle.formField(context),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).accentColor, width: 1.0)),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).accentColor, width: 1.0)),
+                  prefixIcon: const Icon(
+                    Icons.person_add,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.only(),
-            child: TextField(
-              inputFormatters: [
-                WhitelistingTextInputFormatter(RegExp('[0-9]')),
-              ],
-              obscureText: false,
-              style: CustomTextStyle.formField(context),
-              controller: _newPhoneController,
-              decoration: InputDecoration(
-                //Add th Hint text here.
-                hintText: Controller.displayHintTextNewPhone,
-                hintStyle: CustomTextStyle.formField(context),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).accentColor, width: 1.0)),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).accentColor, width: 1.0)),
-                prefixIcon: const Icon(
-                  Icons.phone_android,
-                  color: Colors.white,
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.only(),
+              child: TextField(
+                inputFormatters: [
+                  WhitelistingTextInputFormatter(RegExp('[0-9]')),
+                ],
+                obscureText: false,
+                style: CustomTextStyle.formField(context),
+                controller: _newPhoneController,
+                decoration: InputDecoration(
+                  //Add th Hint text here.
+                  hintText: Controller.displayHintTextNewPhone,
+                  hintStyle: CustomTextStyle.formField(context),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).accentColor, width: 1.0)),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).accentColor, width: 1.0)),
+                  prefixIcon: const Icon(
+                    Icons.phone_android,
+                    color: Colors.white,
+                  ),
                 ),
+                keyboardType: TextInputType.phone,
               ),
-              keyboardType: TextInputType.phone,
             ),
           ),
-        ),
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.only(),
-            child: TextField(
-              // inputFormatters: [WhitelistingTextInputFormatter(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")),],
-              obscureText: false,
-              style: CustomTextStyle.formField(context),
-              controller: _newEmailController,
-              decoration: InputDecoration(
-                //Add th Hint text here.
-                hintText: Controller.displayHintTextNewEmail,
-                hintStyle: CustomTextStyle.formField(context),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).accentColor, width: 1.0)),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).accentColor, width: 1.0)),
-                prefixIcon: const Icon(
-                  Icons.email,
-                  color: Colors.white,
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.only(),
+              child: TextField(
+                // inputFormatters: [WhitelistingTextInputFormatter(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")),],
+                obscureText: false,
+                style: CustomTextStyle.formField(context),
+                controller: _newEmailController,
+                decoration: InputDecoration(
+                  //Add th Hint text here.
+                  hintText: Controller.displayHintTextNewEmail,
+                  hintStyle: CustomTextStyle.formField(context),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).accentColor, width: 1.0)),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).accentColor, width: 1.0)),
+                  prefixIcon: const Icon(
+                    Icons.email,
+                    color: Colors.white,
+                  ),
                 ),
+                keyboardType: TextInputType.emailAddress,
               ),
-              keyboardType: TextInputType.emailAddress,
             ),
           ),
-        ),
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.only(),
-            child: TextField(
-              obscureText: true,
-              style: CustomTextStyle.formField(context),
-              controller: _newPasswordController,
-              decoration: InputDecoration(
-                //Add the Hint text here.
-                hintText: Controller.displayHintTextNewPassword,
-                hintStyle: CustomTextStyle.formField(context),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).accentColor, width: 1.0)),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).accentColor, width: 1.0)),
-                prefixIcon: const Icon(
-                  Icons.lock,
-                  color: Colors.white,
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.only(),
+              child: TextField(
+                obscureText: true,
+                style: CustomTextStyle.formField(context),
+                controller: _newPasswordController,
+                decoration: InputDecoration(
+                  //Add the Hint text here.
+                  hintText: Controller.displayHintTextNewPassword,
+                  hintStyle: CustomTextStyle.formField(context),
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).accentColor, width: 1.0)),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).accentColor, width: 1.0)),
+                  prefixIcon: const Icon(
+                    Icons.lock,
+                    color: Colors.white,
+                  ),
                 ),
+                // keyboardType: TextInputType.visiblePassword,
               ),
-              // keyboardType: TextInputType.visiblePassword,
             ),
           ),
-        ),
-        SizedBox(
-          height: ScreenUtil().setHeight(30),
-        ),
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.only(),
-            child: RaisedButton(
-              child: Text(
-                Controller.displaySignUpMenuButton,
-                style: CustomTextStyle.button(context),
+          SizedBox(
+            height: ScreenUtil().setHeight(30),
+          ),
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.only(),
+              child: RaisedButton(
+                child: Text(
+                  Controller.displaySignUpMenuButton,
+                  style: CustomTextStyle.button(context),
+                ),
+                color: Colors.blueGrey,
+                onPressed: () => {
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    duration: Duration(seconds: 10),
+                    content: Row(
+                      children: <Widget>[
+                        CircularProgressIndicator(),
+                        Text("  Kayıt Gerçekleştiriliyor...")
+                      ],
+                    ),
+                  )),
+                  // Future.delayed(Duration(seconds: 3), () {
+                  Controller.signUpWithEmailAndPassword(
+                      _newEmailController,
+                      _newPasswordController,
+                      _newNameController,
+                      _newPhoneController)
+                  // .whenComplete(() => {
+                  //       // // Navigator.of(context).pushNamed("/Home")
+                  //       // Scaffold.of(context).removeCurrentSnackBar()
+                  //     })
+                  // }),
+                },
               ),
-              color: Colors.blueGrey,
-              onPressed: () => Controller.signUpWithEmailAndPassword(
-                  _newEmailController,
-                  _newPasswordController,
-                  _newNameController,
-                  _newPhoneController),
             ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
 
   Widget horizontalLine() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -490,7 +526,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
 }
 
 class LogInPage extends StatefulWidget {
- const LogInPage({Key key}) : super(key: key);
+  const LogInPage({Key key}) : super(key: key);
 
   @protected
   @override
@@ -560,8 +596,10 @@ class Controller extends ControllerMVC {
   static Future<bool> signInWithEmail(context, email, password) =>
       Model._signInWithEmail(context, email, password);
 
-  static void signUpWithEmailAndPassword(email, password, name, phone) =>
-      Model._signUpWithEmailAndPassword(email, password, name, phone);
+  static Future<bool> signUpWithEmailAndPassword(
+      email, password, name, phone) async {
+    Model._signUpWithEmailAndPassword(email, password, name, phone);
+  }
 
   // static Future navigateToProfile(context) => Model._navigateToProfile(context);
 
@@ -571,11 +609,11 @@ class Controller extends ControllerMVC {
   //   }
   // }
 
-  // static Future tryToLogInUserViaEmail(context, email, password) async {
-  //   if (await signInWithEmail(context, email, password) == true) {
-  //     navigateToProfile(context);
-  //   }
-  // }
+  static Future tryToLogInUserViaEmail(context, email, password) async {
+    if (await signInWithEmail(context, email, password) == true) {
+      // navigateToProfile(context);
+    }
+  }
 
   static Future tryToSignUpWithEmail(email, password) async {
     if (await tryToSignUpWithEmail(email, password) == true) {
@@ -647,10 +685,30 @@ class Model {
   static Future<bool> _signInWithEmail(context, TextEditingController email,
       TextEditingController password) async {
     try {
-      // AuthResult result = await FirebaseAuth.instance
-      //     .signInWithEmailAndPassword(
-      //     email: email.text.trim().toLowerCase(), password: password.text);
-      // print('Signed in: ${result.user.uid}');
+      final loginApi = LoginApi();
+      var result1 = loginApi
+          .loginUserWithEmail(
+        email: email.text.trim().toLowerCase(),
+        pass: password.text,
+      )
+          .then((result2) {
+        if (result2.statusCode == 200) {
+          Toast.show('Giriş yapıldı...', context,
+              duration: 4,
+              gravity: Toast.TOP,
+              backgroundColor: Colors.green,
+              backgroundRadius: 5);
+        } else {
+          Toast.show('${jsonDecode(result2.body)}', context,
+              duration: 7,
+              gravity: Toast.TOP,
+              backgroundColor: Colors.red,
+              backgroundRadius: 5);
+        }
+        Scaffold.of(context).removeCurrentSnackBar();
+        print(result2.body);
+      });
+
       return true;
     } catch (e) {
       print('Error: $e');
@@ -665,13 +723,31 @@ class Model {
       TextEditingController phone) async {
     try {
       final loginApi = LoginApi();
-      final result = loginApi.registerUserWithEmail(
-          email: email.text.trim().toLowerCase(),
-          pass: password.text,
-          name: name.text,
-          phone: phone.text);
-
-      // print('Signed up: ${result.user.uid}');
+      var result1 = loginApi
+          .registerUserWithEmail(
+              email: email.text.trim().toLowerCase(),
+              pass: password.text,
+              name: name.text,
+              phone: phone.text)
+          .then((result2) {
+        if (result2.statusCode == 200) {
+          Toast.show(
+              'Kaydınız başarıyla gerçekleşti. \r\nŞimdi giriş yapabilirsiniz',
+              _buildContext,
+              duration: 4,
+              gravity: Toast.TOP,
+              backgroundColor: Colors.green,
+              backgroundRadius: 5);
+        } else {
+          Toast.show('${jsonDecode(result2.body)}', _buildContext,
+              duration: 7,
+              gravity: Toast.TOP,
+              backgroundColor: Colors.red,
+              backgroundRadius: 5);
+        }
+        Scaffold.of(_buildContext).removeCurrentSnackBar();
+        print(result2.statusCode);
+      });
 
       return true;
     } catch (e) {
@@ -716,18 +792,24 @@ class Model {
 // }
 
 class CustomTextStyle {
-  static TextStyle formField(BuildContext context) => Theme.of(context).textTheme.title.copyWith(
-        fontSize: 18.0, fontWeight: FontWeight.normal, color: Colors.white);
+  static TextStyle formField(BuildContext context) =>
+      Theme.of(context).textTheme.title.copyWith(
+          fontSize: 18.0, fontWeight: FontWeight.normal, color: Colors.white);
 
-  static TextStyle title(BuildContext context) => Theme.of(context).textTheme.title.copyWith(
-        fontSize: 34, fontWeight: FontWeight.bold, color: Colors.white);
+  static TextStyle title(BuildContext context) => Theme.of(context)
+      .textTheme
+      .title
+      .copyWith(fontSize: 34, fontWeight: FontWeight.bold, color: Colors.white);
 
-  static TextStyle subTitle(BuildContext context) => Theme.of(context).textTheme.title.copyWith(
-        fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white);
+  static TextStyle subTitle(BuildContext context) =>
+      Theme.of(context).textTheme.title.copyWith(
+          fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white);
 
-  static TextStyle button(BuildContext context) => Theme.of(context).textTheme.title.copyWith(
-        fontSize: 20, fontWeight: FontWeight.normal, color: Colors.white);
+  static TextStyle button(BuildContext context) =>
+      Theme.of(context).textTheme.title.copyWith(
+          fontSize: 20, fontWeight: FontWeight.normal, color: Colors.white);
 
-  static TextStyle body(BuildContext context) => Theme.of(context).textTheme.title.copyWith(
-        fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white);
+  static TextStyle body(BuildContext context) =>
+      Theme.of(context).textTheme.title.copyWith(
+          fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white);
 }
