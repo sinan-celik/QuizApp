@@ -18,6 +18,7 @@ import 'package:quiz_app/src/datamodels/app_data.dart';
 import 'package:quiz_app/src/models/models.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:toast/toast.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 bool _signUpActive = false;
 bool _signInActive = true;
@@ -42,11 +43,14 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
 GoogleSignInAccount _account;
 AppModel _appModel;
 BuildContext _buildContext;
+final storage = FlutterSecureStorage();
 
-var email = 'tony@starkindustries.com';
-bool emailValid = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-    .hasMatch(email);
+// var email = 'tony@starkindustries.com';
+// bool emailValid = RegExp(
+//         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+//     .hasMatch(email);
+
+
 // class LoginPageWidget extends StatelessWidget {
 //   LoginPageWidget({Key key}) : super(key: key);
 
@@ -693,6 +697,11 @@ class Model {
       )
           .then((result2) {
         if (result2.statusCode == 200) {
+          final jsonResult = jsonDecode(result2.body);
+          storage.write(key: 'token', value: jsonResult['token']);
+          storage.write(key: 'email', value: email.text.trim().toLowerCase());
+          storage.write(key: 'loginType', value: 'email');
+
           Toast.show('Giriş yapıldı...', context,
               duration: 4,
               gravity: Toast.TOP,

@@ -49,7 +49,7 @@ class SwitchTabWidget extends StatelessWidget {
           rebuilderState: appModel.states.mainPage,
           builder: (state, _) => FutureBuilder(
               // future: categoriesFuture,
-              builder: (context, snapshot) => MainPage()),
+              builder: (context, snapshot) => MainPageSF()),
         );
         break;
       case AppTab.trivia:
