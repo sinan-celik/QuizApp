@@ -1,22 +1,17 @@
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:rebuilder/rebuilder.dart';
-// import 'package:quiz_app/login/CustomIcons.dart';
-// import 'package:momentum/Screens/Profile.dart';
 import 'package:quiz_app/login/SocialIcons.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:quiz_app/login/login_api.dart';
 import 'package:quiz_app/src/datamodels/app_data.dart';
 import 'package:quiz_app/src/models/models.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -45,39 +40,18 @@ AppModel _appModel;
 BuildContext _buildContext;
 final storage = FlutterSecureStorage();
 
-// var email = 'tony@starkindustries.com';
-// bool emailValid = RegExp(
-//         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-//     .hasMatch(email);
+bool signUpSuccess = false;
+Model model = Model();
 
+void clearTextFields() {
+  _emailController.clear();
+  _passwordController.clear();
+  _newEmailController.clear();
+  _newPasswordController.clear();
+  _newNameController.clear();
+  _newPhoneController.clear();
+}
 
-// class LoginPageWidget extends StatelessWidget {
-//   LoginPageWidget({Key key}) : super(key: key);
-
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//         theme: _buildDarkTheme(),
-//         home: Scaffold(
-//           resizeToAvoidBottomPadding: true,
-//           body:  Builder(
-//               builder: (context) =>  Container(
-//                     decoration: BoxDecoration(
-//                         gradient: LinearGradient(
-//                             begin: Alignment.topCenter,
-//                             end: Alignment.bottomCenter,
-//                             colors: [
-//                           Theme.of(context).primaryColor,
-//                           Theme.of(context).primaryColorLight
-//                         ])),
-//                     child: Padding(
-//                       padding: EdgeInsets.only(top: 40.0),
-//                       //Sets the main padding all widgets has to adhere to.
-//                       child: LogInPage(),
-//                     ),
-//                   )),
-//         ));
-//   }
-// }
 
 class _LogInPageState extends StateMVC<LogInPage> {
   _LogInPageState() : super(Controller());
@@ -106,26 +80,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
               onPressed: () => _appModel.tab.value = AppTab.main,
             ),
           ),
-          // Container(
-          //   child: Padding(
-          //       padding: EdgeInsets.only(top: 2.0),
-          //       child: Column(
-          //         mainAxisAlignment: MainAxisAlignment.center,
-          //         children: <Widget>[
-          //           // Text(Controller.displayLogoTitle,
-          //           //     style: CustomTextStyle.title(context)),
-          //           // Text(
-          //           //   Controller.displayLogoSubTitle,
-          //           //   style: CustomTextStyle.subTitle(context),
-          //           // ),
-          //         ],
-          //       )),
-          //   width: ScreenUtil().setWidth(750),
-          //   height: ScreenUtil().setHeight(190),
-          // ),
-          // SizedBox(
-          //   height: ScreenUtil().setHeight(60),
-          // ),
+
           Container(
             child: Padding(
               padding: const EdgeInsets.only(left: 25.0, right: 25.0),
@@ -191,9 +146,9 @@ class _LogInPageState extends StateMVC<LogInPage> {
   Widget _showSignIn(context) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          SizedBox(
-            height: ScreenUtil().setHeight(30),
-          ),
+          // SizedBox(
+          //   height: ScreenUtil().setHeight(30),
+          // ),
           Container(
             child: Padding(
               padding: const EdgeInsets.only(),
@@ -210,7 +165,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
                       borderSide: BorderSide(
                           color: Theme.of(context).accentColor, width: 1.0)),
                   prefixIcon: const Icon(
-                    FontAwesomeIcons.envelope,
+                    Icons.email,
                     color: Colors.white,
                   ),
                 ),
@@ -219,9 +174,9 @@ class _LogInPageState extends StateMVC<LogInPage> {
               ),
             ),
           ),
-          SizedBox(
-            height: ScreenUtil().setHeight(1),
-          ),
+          // SizedBox(
+          //   height: ScreenUtil().setHeight(1),
+          // ),
           Container(
             child: Padding(
               padding: const EdgeInsets.only(),
@@ -240,7 +195,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
                       borderSide: BorderSide(
                           color: Theme.of(context).accentColor, width: 1.0)),
                   prefixIcon: const Icon(
-                    FontAwesomeIcons.unlockAlt,
+                    Icons.lock_open,
                     color: Colors.white,
                   ),
                 ),
@@ -277,8 +232,45 @@ class _LogInPageState extends StateMVC<LogInPage> {
                             ],
                           ),
                         )),
-                        Controller.tryToLogInUserViaEmail(
-                            context, _emailController, _passwordController)
+
+                        // Future.delayed(Duration( seconds: 15), () {}),
+                        model
+                            ._signInWithEmail(
+                                context, _emailController, _passwordController)
+                            .then(
+                          (onValue) {
+                            if (onValue.statusCode == 200) {
+                              final jsonResult = jsonDecode(onValue.body);
+
+                              Future.wait([
+                                storage.write(
+                                    key: 'token', value: jsonResult['token']),
+                                storage.write(
+                                    key: 'email',
+                                    value: _emailController.text
+                                        .trim()
+                                        .toLowerCase()),
+                                storage.write(key: 'loginType', value: 'email')
+                              ]);
+
+                              Toast.show('Giriş yapıldı...', context,
+                                  duration: 2,
+                                  gravity: Toast.TOP,
+                                  backgroundColor: Colors.green,
+                                  backgroundRadius: 5);
+                              clearTextFields();
+
+                              setState(() => _appModel.tab.value = AppTab.main);
+                            } else {
+                              Toast.show('${jsonDecode(onValue.body)}', context,
+                                  duration: 3,
+                                  gravity: Toast.TOP,
+                                  backgroundColor: Colors.red,
+                                  backgroundRadius: 5);
+                            }
+                            Scaffold.of(context).removeCurrentSnackBar();
+                          },
+                        )
                       }
                   // onPressed: () => {},
                   ),
@@ -324,23 +316,23 @@ class _LogInPageState extends StateMVC<LogInPage> {
                   onPressed: () => {Controller.handleGoogleSignIn(context)},
                 )),
           ),
-          SizedBox(
-            height: ScreenUtil().setHeight(30),
-          ),
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.only(),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  horizontalLine(),
-                  Text(Controller.displaySeparatorText,
-                      style: CustomTextStyle.body(context)),
-                  horizontalLine()
-                ],
-              ),
-            ),
-          ),
+          // SizedBox(
+          //   height: ScreenUtil().setHeight(30),
+          // ),
+          // Container(
+          //   child: Padding(
+          //     padding: const EdgeInsets.only(),
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       children: <Widget>[
+          //         horizontalLine(),
+          //         Text(Controller.displaySeparatorText,
+          //             style: CustomTextStyle.body(context)),
+          //         horizontalLine()
+          //       ],
+          //     ),
+          //   ),
+          // ),
           SizedBox(
             height: ScreenUtil().setHeight(30),
           ),
@@ -499,17 +491,16 @@ class _LogInPageState extends StateMVC<LogInPage> {
                       ],
                     ),
                   )),
-                  // Future.delayed(Duration(seconds: 3), () {
                   Controller.signUpWithEmailAndPassword(
-                      _newEmailController,
-                      _newPasswordController,
-                      _newNameController,
-                      _newPhoneController)
-                  // .whenComplete(() => {
-                  //       // // Navigator.of(context).pushNamed("/Home")
-                  //       // Scaffold.of(context).removeCurrentSnackBar()
-                  //     })
-                  // }),
+                          _newEmailController,
+                          _newPasswordController,
+                          _newNameController,
+                          _newPhoneController)
+                      .whenComplete(
+                    () => {
+                      if (signUpSuccess) {setState(Controller.changeToSignIn)}
+                    },
+                  )
                 },
               ),
             ),
@@ -526,7 +517,7 @@ class _LogInPageState extends StateMVC<LogInPage> {
         ),
       );
 
-  Widget emailErrorText() => Text(Controller.displayErrorEmailLogIn);
+  // Widget emailErrorText() => Text(Controller.displayErrorEmailLogIn);
 }
 
 class LogInPage extends StatefulWidget {
@@ -552,10 +543,6 @@ class Controller extends ControllerMVC {
   static Controller get con => _this;
 
   /// The Controller doesn't know any values or methods. It simply handles the communication between the view and the model.
-
-  // static String get displayLogoTitle => Model._logoTitle;
-
-  // static String get displayLogoSubTitle => Model._logoSubTitle;
 
   static String get displaySignUpMenuButton => Model._signUpMenuButton;
 
@@ -585,7 +572,7 @@ class Controller extends ControllerMVC {
   static String get displaySeparatorText =>
       Model._alternativeLogInSeparatorText;
 
-  static String get displayErrorEmailLogIn => Model._emailLogInFailed;
+  // static String get displayErrorEmailLogIn => Model._emailLogInFailed;
 
   static void changeToSignUp() => Model._changeToSignUp();
 
@@ -597,45 +584,20 @@ class Controller extends ControllerMVC {
   static Future<bool> handleGoogleSignIn(context) =>
       Model._handleGoogleSignIn(context);
 
-  static Future<bool> signInWithEmail(context, email, password) =>
-      Model._signInWithEmail(context, email, password);
 
-  static Future<bool> signUpWithEmailAndPassword(
-      email, password, name, phone) async {
-    Model._signUpWithEmailAndPassword(email, password, name, phone);
-  }
+  static Future<http.Response> signUpWithEmailAndPassword(
+          email, password, name, phone) async =>
+      Model._signUpWithEmailAndPassword(email, password, name, phone);
 
-  // static Future navigateToProfile(context) => Model._navigateToProfile(context);
-
-  // static Future tryToLogInUserViaFacebook(context) async {
-  //   if (await signInWithFacebook(context) == true) {
-  //     navigateToProfile(context);
-  //   }
-  // }
-
-  static Future tryToLogInUserViaEmail(context, email, password) async {
-    if (await signInWithEmail(context, email, password) == true) {
-      // navigateToProfile(context);
-    }
-  }
-
-  static Future tryToSignUpWithEmail(email, password) async {
-    if (await tryToSignUpWithEmail(email, password) == true) {
-      //TODO Display success message or go to Login screen
-    } else {
-      //TODO Display error message and stay put.
-    }
-  }
 }
 
 class Model {
-  // static String _logoTitle = "MOMENTUM";
-  // static String _logoSubTitle = "GROWTH * HAPPENS * TODAY";
+
   static const String _signInMenuButton = 'Giriş Yap';
   static const String _signUpMenuButton = 'Kaydol';
 
-  static const String _hintTextEmail = 'e-posta';
-  static const String _hintTextPassword = 'şifre';
+  static const String _hintTextEmail = 'E-posta';
+  static const String _hintTextPassword = 'Şifre';
 
   static const String _hintTextNewEmail = 'E-posta adresiniz';
   static const String _hintTextNewPassword = 'Şifreniz';
@@ -646,10 +608,10 @@ class Model {
   static const String _signInWithEmailButtonText = 'E-posta ile giriş yap';
   static const String _signInWithGoogleButtonText = 'Google ile giriş yap';
   static const String _signInWithFacebookButtonText = 'Facebook ile giriş yap';
-  static const String _alternativeLogInSeparatorText = 'ya da';
+  static const String _alternativeLogInSeparatorText = 'veya';
 
-  static const String _emailLogInFailed =
-      'Email or Password was incorrect. Please try again';
+  // static const String _emailLogInFailed =
+  //     'Email or Password was incorrect. Please try again';
 
   static void _changeToSignUp() {
     _signUpActive = true;
@@ -686,53 +648,29 @@ class Model {
     // }
   }
 
-  static Future<bool> _signInWithEmail(context, TextEditingController email,
+  Future<http.Response> _signInWithEmail(context, TextEditingController email,
       TextEditingController password) async {
     try {
       final loginApi = LoginApi();
-      var result1 = loginApi
-          .loginUserWithEmail(
+      return loginApi.loginUserWithEmail(
         email: email.text.trim().toLowerCase(),
         pass: password.text,
-      )
-          .then((result2) {
-        if (result2.statusCode == 200) {
-          final jsonResult = jsonDecode(result2.body);
-          storage.write(key: 'token', value: jsonResult['token']);
-          storage.write(key: 'email', value: email.text.trim().toLowerCase());
-          storage.write(key: 'loginType', value: 'email');
+      );
 
-          Toast.show('Giriş yapıldı...', context,
-              duration: 4,
-              gravity: Toast.TOP,
-              backgroundColor: Colors.green,
-              backgroundRadius: 5);
-        } else {
-          Toast.show('${jsonDecode(result2.body)}', context,
-              duration: 7,
-              gravity: Toast.TOP,
-              backgroundColor: Colors.red,
-              backgroundRadius: 5);
-        }
-        Scaffold.of(context).removeCurrentSnackBar();
-        print(result2.body);
-      });
-
-      return true;
     } catch (e) {
       print('Error: $e');
-      return false;
+      return null;
     }
   }
 
-  static Future<bool> _signUpWithEmailAndPassword(
+  static Future<http.Response> _signUpWithEmailAndPassword(
       TextEditingController email,
       TextEditingController password,
       TextEditingController name,
       TextEditingController phone) async {
     try {
       final loginApi = LoginApi();
-      var result1 = loginApi
+      return loginApi
           .registerUserWithEmail(
               email: email.text.trim().toLowerCase(),
               pass: password.text,
@@ -747,21 +685,23 @@ class Model {
               gravity: Toast.TOP,
               backgroundColor: Colors.green,
               backgroundRadius: 5);
+          Scaffold.of(_buildContext).removeCurrentSnackBar();
+          signUpSuccess = true;
         } else {
           Toast.show('${jsonDecode(result2.body)}', _buildContext,
               duration: 7,
               gravity: Toast.TOP,
               backgroundColor: Colors.red,
               backgroundRadius: 5);
+          Scaffold.of(_buildContext).removeCurrentSnackBar();
+          signUpSuccess = false;
         }
-        Scaffold.of(_buildContext).removeCurrentSnackBar();
-        print(result2.statusCode);
       });
-
-      return true;
     } catch (e) {
+      signUpSuccess = false;
+
       print('Error: $e');
-      return false;
+      return null;
     }
   }
 
@@ -780,25 +720,8 @@ class Model {
     }
   }
 
-  // static Future _navigateToProfile(context) async {
-  //   await Navigator.push(
-  //       context, MaterialPageRoute(builder: (context) => Profile()));
-  // }
-}
 
-// ThemeData _buildDarkTheme() {
-//   final baseTheme = ThemeData(
-//     fontFamily: "Open Sans",
-//   );
-//   return baseTheme.copyWith(
-//     brightness: Brightness.dark,
-//     primaryColor: Color(0xFF143642),
-//     primaryColorLight: Color(0xFF26667d),
-//     primaryColorDark: Color(0xFF08161b),
-//     primaryColorBrightness: Brightness.dark,
-//     accentColor: Colors.white,
-//   );
-// }
+}
 
 class CustomTextStyle {
   static TextStyle formField(BuildContext context) =>
