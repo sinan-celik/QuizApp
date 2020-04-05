@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/src/screens/about_page.dart';
 
 import 'package:rebuilder/rebuilder.dart';
 import 'package:quiz_app/login/login_page_widget.dart';
@@ -25,12 +26,12 @@ class HomePage extends StatelessWidget {
         dataModel: appModel.tab,
         rebuilderState: appModel.states.tab,
         builder: (state, data) => Scaffold(
-              // resizeToAvoidBottomInset: false,
-              appBar: data.value != AppTab.main ? null : AppBar(),
-              drawer: DrawerWidget(),
-              body: SwitchTabWidget(
-                appModel: appModel,
-              )));
+            // resizeToAvoidBottomInset: false,
+            appBar: data.value != AppTab.main ? null : AppBar(),
+            drawer: DrawerWidget(),
+            body: SwitchTabWidget(
+              appModel: appModel,
+            )));
   }
 }
 
@@ -91,6 +92,11 @@ class SwitchTabWidget extends StatelessWidget {
             rebuilderState: appModel.states.loginPage,
             builder: (state, _) => const LogInPage());
         break;
+      case AppTab.about:
+        return Rebuilder(
+            rebuilderState: appModel.states.aboutPage,
+            builder: (state, _) => AboutPage());
+        break;
 
       default:
         return Container();
@@ -134,6 +140,13 @@ class DrawerWidget extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               appModel.tab.value = AppTab.settings;
+            },
+          ),
+          ListTile(
+            title: const Text('Hakkında'),
+            onTap: () {
+              Navigator.pop(context);
+              appModel.tab.value = AppTab.about;
             },
           ),
           const AboutListTile(

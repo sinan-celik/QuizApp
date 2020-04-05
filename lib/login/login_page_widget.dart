@@ -52,7 +52,6 @@ void clearTextFields() {
   _newPhoneController.clear();
 }
 
-
 class _LogInPageState extends StateMVC<LogInPage> {
   _LogInPageState() : super(Controller());
 
@@ -67,78 +66,79 @@ class _LogInPageState extends StateMVC<LogInPage> {
       DeviceOrientation.portraitDown,
     ]);
     ScreenUtil.init(context, width: 750, height: 1334, allowFontScaling: true);
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          AppBar(
-            centerTitle: true,
-            title: const Text(
-              'Bağlan',
-            ),
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => _appModel.tab.value = AppTab.main,
-            ),
-          ),
-
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-              child: IntrinsicWidth(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    OutlineButton(
-                      onPressed: () => setState(Controller.changeToSignIn),
-                      borderSide: const BorderSide(
-                        style: BorderStyle.none,
-                      ),
-                      child: Text(Controller.displaySignInMenuButton,
-                          style: _signInActive
-                              ? TextStyle(
-                                  fontSize: 22,
-                                  color: Theme.of(context).accentColor,
-                                  fontWeight: FontWeight.bold)
-                              : TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).accentColor,
-                                  fontWeight: FontWeight.normal)),
-                    ),
-                    OutlineButton(
-                      onPressed: () => setState(Controller.changeToSignUp),
-                      borderSide: const BorderSide(
-                        style: BorderStyle.none,
-                      ),
-                      child: Text(Controller.displaySignUpMenuButton,
-                          style: _signUpActive
-                              ? TextStyle(
-                                  fontSize: 22,
-                                  color: Theme.of(context).accentColor,
-                                  fontWeight: FontWeight.bold)
-                              : TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).accentColor,
-                                  fontWeight: FontWeight.normal)),
-                    )
-                  ],
-                ),
+    return Scrollbar(
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            AppBar(
+              centerTitle: true,
+              title: const Text(
+                'Bağlan',
+              ),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => _appModel.tab.value = AppTab.main,
               ),
             ),
-            width: ScreenUtil().setWidth(750),
-            height: ScreenUtil().setHeight(170),
-          ),
-          SizedBox(
-            height: ScreenUtil().setHeight(10),
-          ),
-          Container(
-            child: Padding(
-                padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-                child: _signInActive ? _showSignIn(context) : _showSignUp()),
-            width: ScreenUtil().setWidth(750),
-            height: ScreenUtil().setHeight(778),
-          ),
-        ],
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+                child: IntrinsicWidth(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      OutlineButton(
+                        onPressed: () => setState(Controller.changeToSignIn),
+                        borderSide: const BorderSide(
+                          style: BorderStyle.none,
+                        ),
+                        child: Text(Controller.displaySignInMenuButton,
+                            style: _signInActive
+                                ? TextStyle(
+                                    fontSize: 22,
+                                    color: Theme.of(context).accentColor,
+                                    fontWeight: FontWeight.bold)
+                                : TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).accentColor,
+                                    fontWeight: FontWeight.normal)),
+                      ),
+                      OutlineButton(
+                        onPressed: () => setState(Controller.changeToSignUp),
+                        borderSide: const BorderSide(
+                          style: BorderStyle.none,
+                        ),
+                        child: Text(Controller.displaySignUpMenuButton,
+                            style: _signUpActive
+                                ? TextStyle(
+                                    fontSize: 22,
+                                    color: Theme.of(context).accentColor,
+                                    fontWeight: FontWeight.bold)
+                                : TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).accentColor,
+                                    fontWeight: FontWeight.normal)),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              width: ScreenUtil().setWidth(750),
+              height: ScreenUtil().setHeight(170),
+            ),
+            SizedBox(
+              height: ScreenUtil().setHeight(10),
+            ),
+            Container(
+              child: Padding(
+                  padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                  child: _signInActive ? _showSignIn(context) : _showSignUp()),
+              width: ScreenUtil().setWidth(750),
+              height: ScreenUtil().setHeight(778),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -584,15 +584,12 @@ class Controller extends ControllerMVC {
   static Future<bool> handleGoogleSignIn(context) =>
       Model._handleGoogleSignIn(context);
 
-
   static Future<http.Response> signUpWithEmailAndPassword(
           email, password, name, phone) async =>
       Model._signUpWithEmailAndPassword(email, password, name, phone);
-
 }
 
 class Model {
-
   static const String _signInMenuButton = 'Giriş Yap';
   static const String _signUpMenuButton = 'Kaydol';
 
@@ -656,7 +653,6 @@ class Model {
         email: email.text.trim().toLowerCase(),
         pass: password.text,
       );
-
     } catch (e) {
       print('Error: $e');
       return null;
@@ -719,8 +715,6 @@ class Model {
       return false;
     }
   }
-
-
 }
 
 class CustomTextStyle {

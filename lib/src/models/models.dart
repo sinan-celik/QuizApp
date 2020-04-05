@@ -1,5 +1,4 @@
-
-enum AppTab { main, trivia, summary, triviaStats, settings, login }
+enum AppTab { main, trivia, summary, triviaStats, settings, login, about }
 
 enum ApiType { mock, remote }
 
@@ -16,4 +15,3 @@ class AnswerAnimation {
   int chosenAnswerIndex;
   bool startPlaying = false;
 }
-
