@@ -58,7 +58,7 @@ class MainPage extends State<MainPageSF> {
         direction: Axis.vertical,
         children: <Widget>[
           const SizedBox(
-            height: 200,
+            height: 150,
           ),
           Expanded(
             child: Column(

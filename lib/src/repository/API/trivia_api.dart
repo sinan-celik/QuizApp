@@ -9,6 +9,8 @@ import '../../models/question.dart';
 
 import 'api_interface.dart';
 
+import 'package:quiz_app/src/globals.dart' as globals;
+
 class TriviaAPI implements QuestionsAPI {
   // @override
   // Future<List<Category>> getCategories() async {
@@ -72,7 +74,7 @@ class TriviaAPI implements QuestionsAPI {
     // final url =
     //     'https://opentdb.com/api.php?amount=$number&difficulty=$qdifficulty&type=$qtype&category=${category.id}';
 
-final url = 'http://10.0.2.2:81/api/Quiz/GetByProjectCode?pCode=test';
+    final url = '${globals.apiUrl}/api/Quiz/GetByProjectCode?pCode=test';
 
     final response = await http.get(url);
 
@@ -83,10 +85,10 @@ final url = 'http://10.0.2.2:81/api/Quiz/GetByProjectCode?pCode=test';
 
       questions = result
           .map((question) => Question.fromQuestionModel(question))
-          .toList();      
+          .toList();
       return questions;
     } else {
-      print('Request failed with status: ${response.statusCode}.');     
+      print('Request failed with status: ${response.statusCode}.');
     }
   }
 }

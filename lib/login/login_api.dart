@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:quiz_app/src/globals.dart' as globals;
 
 class LoginApi {
   Future<http.Response> registerUserWithEmail(
       {String email, String name, String pass, String phone}) async {
-    const url = 'http://10.0.2.2:81/api/Auth/register';
+    final url = '${globals.apiUrl}/api/Auth/register';
     final _body = json.encode({
       'email': email,
       'password': pass,
@@ -30,7 +31,7 @@ class LoginApi {
 
 
     Future<http.Response> loginUserWithEmail({String email, String pass}) async {
-    const url = 'http://10.0.2.2:81/api/Auth/login';
+    final url = '${globals.apiUrl}/api/Auth/login';
     final _body = json.encode({
       'email': email,
       'password': pass,
